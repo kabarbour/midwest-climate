@@ -1,12 +1,132 @@
 ---
-title: "My Website"
+title: "Midwest Climate Change"
+author: "Kaitlyn Barbour"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float:
+      collapsed: true
+    toc_depth: 3
+    css: 
+    fig_width: 8.75
+    self_contained: false
 ---
 
-hello world!
+![](images/header.png)
+
+# Introduction
+
+some text here about how midwesterners dont think climate change is an issue facing them
+
+some chart / info from ANES 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen=999) #prevent it from using scientific notation when knitting html
+
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(cowplot)
+library(ggalt)
+library(ggtext)
+library(plotly)
+library(DT)
+library(broom)
+library(tufte)
+library(reshape2)
+library(RColorBrewer)
+
+```
+
 
 ```{r}
 
-test!
+climate_data_all <- read_csv("climate-data.csv", 
+    col_types = cols(loc_id = col_character()))
+#View(climate_data)
+
+cities <- c("Kansas City", "Omaha", "Minneapolis", "Louisville", 
+            "Chicago", "Indianapolis", "Milwaukee", "Cincinnati", 
+            "Columbus", "Detroit", "Cleveland")
+hazards <- c("Tmax95pctl_days", "Tmax40_days", "Tmax35_days", 
+             "Twb31_days", "heatwave_duration", "heatwave_count", "drought_days")
+
+climate_data <- climate_data_all %>%
+  filter(city %in% cities, hazard %in% hazards)
+
+climate_data$scenario <- factor(
+  climate_data$scenario,
+  levels = c("1995 - 2014", "1.5C", "2.0C", "3.0C")
+)
+
+```
+
+# News Stories
+
+insert links to news stories about increasing heatwaves & severe weather
+
+make some graphics & hyperlink 
+
+
+
+# Heatwave Duration
+
+```{r fig.height=15, fig.width=8}
+
+heatwave_duration <- climate_data %>%
+  filter(hazard == "heatwave_duration",
+         indicator == "expectedvalue")
+
+ggplot(heatwave_duration, aes(x = mean_estimate, y = model, color = scenario)) +
+  geom_point(size = 5, alpha = 0.8) +  
+  scale_x_continuous(limits = c(0, 24)) + 
+  facet_grid(city ~ ., switch = "y") + 
+  theme_minimal() +
+  theme(
+    strip.text.y = element_text(angle = 0),  
+    axis.title.y = element_blank()  
+  ) +
+  labs(
+    title = "Heatwave Count by Model and Scenario",
+    x = "Mean Heatwave Count",
+    color = "Scenario"
+  ) +
+  scale_color_brewer(palette = "YlOrBr") 
+
+```
+
+# 35º heating 
+
+
+
+
+----
+
+# Chart dumping ground
+
+```{r}
+
+heatwave_models <- climate_data %>%
+  filter(hazard == "heatwave_count",
+         indicator == "exceedanceprob",
+         scenario != "1995 - 2014")
+
+
+```
+
+```{r}
+
+ggplot(heatwave_models, aes(x = scenario, y = mean_estimate, color = model)) +
+  geom_point(size = 2, alpha = 0.7) +  
+    facet_grid(~ threshold) +  # Facet by scenario
+  labs(title = "Heatwave Count Exceedance Probability by Threshold and Warming Scenario",
+       x = "Warming Scenario",
+       y = "Mean Estimate of Exceedance Probability") +
+  ylim(0, 1) +
+  theme_minimal() 
 
 ```
 
