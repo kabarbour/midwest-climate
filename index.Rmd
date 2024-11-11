@@ -105,30 +105,7 @@ ggplot(heatwave_duration, aes(x = mean_estimate, y = model, color = scenario)) +
 
 ----
 
-# Chart dumping ground
 
-```{r}
-
-heatwave_models <- climate_data %>%
-  filter(hazard == "heatwave_count",
-         indicator == "exceedanceprob",
-         scenario != "1995 - 2014")
-
-
-```
-
-```{r}
-
-ggplot(heatwave_models, aes(x = scenario, y = mean_estimate, color = model)) +
-  geom_point(size = 2, alpha = 0.7) +  
-    facet_grid(~ threshold) +  # Facet by scenario
-  labs(title = "Heatwave Count Exceedance Probability by Threshold and Warming Scenario",
-       x = "Warming Scenario",
-       y = "Mean Estimate of Exceedance Probability") +
-  ylim(0, 1) +
-  theme_minimal() 
-
-```
 
 
 rmarkdown::render_site()

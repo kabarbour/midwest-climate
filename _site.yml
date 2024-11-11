@@ -5,5 +5,7 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
+    - text: "Source"
       href: about.html
+    - text: "Dumping Ground"
+      href: test.html

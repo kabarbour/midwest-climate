@@ -9,11 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Kaitlyn Barbour" />
 
-<meta name="date" content="2024-11-11" />
 
-<title>Midwest Climate Change</title>
+<title>Dumping Ground</title>
 
 <script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -31,11 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -222,73 +216,7 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
-<style type="text/css">
-.code-folding-btn { margin-bottom: 4px; }
-</style>
 
-
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-@media print {
-.toc-content {
-  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
-  float: right;
-}
-}
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
 
 
 
@@ -298,16 +226,6 @@ div.tocify {
 
 
 <div class="container-fluid main-container">
-
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -343,86 +261,33 @@ div.tocify {
 
 <div id="header">
 
-<div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
-<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
-<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
-</ul>
-</div>
 
 
-
-<h1 class="title toc-ignore">Midwest Climate Change</h1>
-<h4 class="author">Kaitlyn Barbour</h4>
-<h4 class="date">2024-11-11</h4>
+<h1 class="title toc-ignore">Dumping Ground</h1>
 
 </div>
 
 
-<p><img src="images/header.png" /></p>
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
-<p>some text here about how midwesterners dont think climate change is
-an issue facing them</p>
-<p>some chart / info from ANES</p>
-<pre class="r"><code>climate_data_all &lt;- read_csv(&quot;climate-data.csv&quot;, 
-    col_types = cols(loc_id = col_character()))
-#View(climate_data)
-
-cities &lt;- c(&quot;Kansas City&quot;, &quot;Omaha&quot;, &quot;Minneapolis&quot;, &quot;Louisville&quot;, 
-            &quot;Chicago&quot;, &quot;Indianapolis&quot;, &quot;Milwaukee&quot;, &quot;Cincinnati&quot;, 
-            &quot;Columbus&quot;, &quot;Detroit&quot;, &quot;Cleveland&quot;)
-hazards &lt;- c(&quot;Tmax95pctl_days&quot;, &quot;Tmax40_days&quot;, &quot;Tmax35_days&quot;, 
-             &quot;Twb31_days&quot;, &quot;heatwave_duration&quot;, &quot;heatwave_count&quot;, &quot;drought_days&quot;)
-
-climate_data &lt;- climate_data_all %&gt;%
-  filter(city %in% cities, hazard %in% hazards)
-
-climate_data$scenario &lt;- factor(
-  climate_data$scenario,
-  levels = c(&quot;1995 - 2014&quot;, &quot;1.5C&quot;, &quot;2.0C&quot;, &quot;3.0C&quot;)
-)</code></pre>
-</div>
-<div id="news-stories" class="section level1">
-<h1>News Stories</h1>
-<p>insert links to news stories about increasing heatwaves &amp; severe
-weather</p>
-<p>make some graphics &amp; hyperlink</p>
-</div>
-<div id="heatwave-duration" class="section level1">
-<h1>Heatwave Duration</h1>
-<pre class="r"><code>heatwave_duration &lt;- climate_data %&gt;%
-  filter(hazard == &quot;heatwave_duration&quot;,
-         indicator == &quot;expectedvalue&quot;)
-
-ggplot(heatwave_duration, aes(x = mean_estimate, y = model, color = scenario)) +
-  geom_point(size = 5, alpha = 0.8) +  
-  scale_x_continuous(limits = c(0, 24)) + 
-  facet_grid(city ~ ., switch = &quot;y&quot;) + 
-  theme_minimal() +
-  theme(
-    strip.text.y = element_text(angle = 0),  
-    axis.title.y = element_blank()  
-  ) +
-  labs(
-    title = &quot;Heatwave Count by Model and Scenario&quot;,
-    x = &quot;Mean Heatwave Count&quot;,
-    color = &quot;Scenario&quot;
-  ) +
-  scale_color_brewer(palette = &quot;YlOrBr&quot;) </code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
-</div>
-<div id="º-heating" class="section level1">
-<h1>35º heating</h1>
-<hr />
-<p>rmarkdown::render_site()</p>
+<p>Place to dump charts and stuff before moving to full document</p>
+<div id="chart-dumping-ground" class="section level1">
+<h1>Chart dumping ground</h1>
+<pre class="r"><code>heatwave_models &lt;- climate_data %&gt;%
+  filter(hazard == &quot;heatwave_count&quot;,
+         indicator == &quot;exceedanceprob&quot;,
+         scenario != &quot;1995 - 2014&quot;)</code></pre>
+<pre class="r"><code>ggplot(heatwave_models, aes(x = scenario, y = mean_estimate, color = model)) +
+  geom_point(size = 2, alpha = 0.7) +  
+    facet_grid(~ threshold) +  # Facet by scenario
+  labs(title = &quot;Heatwave Count Exceedance Probability by Threshold and Warming Scenario&quot;,
+       x = &quot;Warming Scenario&quot;,
+       y = &quot;Mean Estimate of Exceedance Probability&quot;) +
+  ylim(0, 1) +
+  theme_minimal() </code></pre>
+<p><img src="test_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 
 
 
-</div>
-</div>
 
 </div>
 
@@ -454,41 +319,7 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
-<script>
-$(document).ready(function ()  {
-
-    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
-    $('.unlisted.unnumbered').addClass('toc-ignore')
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
