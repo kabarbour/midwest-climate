@@ -64,6 +64,7 @@ if (window.hljs) {
 
 
 
+<link rel="stylesheet" href="theme.css" type="text/css" />
 
 
 
@@ -320,7 +321,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">My Website</a>
+      <a class="navbar-brand" href="index.html">Midwest Climate Change</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -365,6 +366,7 @@ div.tocify {
 <h1>Introduction</h1>
 <p>some text here about how midwesterners dont think climate change is
 an issue facing them</p>
+<p>give context and set up the problem in terms of midwesterners</p>
 <p>some chart / info from ANES</p>
 <pre class="r"><code>climate_data_all &lt;- read_csv(&quot;climate-data.csv&quot;, 
     col_types = cols(loc_id = col_character()))
@@ -386,12 +388,70 @@ climate_data$scenario &lt;- factor(
 </div>
 <div id="news-stories" class="section level1">
 <h1>News Stories</h1>
-<p>insert links to news stories about increasing heatwaves &amp; severe
-weather</p>
-<p>make some graphics &amp; hyperlink</p>
+<p>insert links to news stories / headlines about increasing heatwaves
+&amp; severe weather</p>
+<p>make some graphics &amp; hyperlink those images / links to their
+sources</p>
+</div>
+<div id="º-heating" class="section level1">
+<h1>35º Heating</h1>
+<p>what is the impact of 35º on people</p>
+<p>electricity / health / etc</p>
+<p>clickable buttons / tabs for the different degrees of heating</p>
+<p>map - highlight each midwestern city - size of bubble = days above
+current heatwaves</p>
+<p>various models are different colors - opacity to show the likelihood
+of different</p>
+<p><em>should i handle threshold in this?</em></p>
+</div>
+<div id="tmax-95-percentile" class="section level1">
+<h1>Tmax 95 percentile</h1>
+<p>localized to 95 percentile</p>
+<p>similar version of map above</p>
+</div>
+<div id="heatwave-count" class="section level1">
+<h1>Heatwave Count</h1>
+<p><em>heatwaves are getting more frequent.</em></p>
+<pre class="r"><code>heatwave_count &lt;- climate_data %&gt;%
+  filter(hazard == &quot;heatwave_count&quot;,
+         indicator == &quot;expectedvalue&quot;)
+
+average_increase &lt;- heatwave_count %&gt;%
+  group_by(scenario) %&gt;%
+  summarize(avg_heatwave_count = mean(mean_estimate, na.rm = TRUE))
+
+print(average_increase)</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   scenario    avg_heatwave_count
+##   &lt;fct&gt;                    &lt;dbl&gt;
+## 1 1995 - 2014               6.42
+## 2 1.5C                      6.42
+## 3 2.0C                      6.81
+## 4 3.0C                      7.51</code></pre>
+<p><em>midwest can expect 6.4 -&gt; 7.5 heatwaves depending on warming
+scenario</em></p>
+<p>may “only be” one heatwave but that has big toll</p>
+<p>show specific cities increasing</p>
+<pre class="r"><code>ggplot(heatwave_count, aes(x = mean_estimate, y = model, color = scenario)) +
+  geom_point(size = 5, alpha = 0.8) +  
+  scale_x_continuous(limits = c(3, 10)) + 
+  facet_grid(city ~ ., switch = &quot;y&quot;) + 
+  theme_minimal() +
+  theme(
+    strip.text.y = element_text(angle = 0),  
+    axis.title.y = element_blank()  
+  ) +
+  labs(
+    title = &quot;Heatwave Count by Model and Scenario&quot;,
+    x = &quot;Mean Heatwave Count&quot;,
+    color = &quot;Scenario&quot;
+  ) +
+  scale_color_brewer(palette = &quot;YlOrBr&quot;) </code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="768" /></p>
 </div>
 <div id="heatwave-duration" class="section level1">
 <h1>Heatwave Duration</h1>
+<p>not only will there be more heatwaves, but they will be longer</p>
 <pre class="r"><code>heatwave_duration &lt;- climate_data %&gt;%
   filter(hazard == &quot;heatwave_duration&quot;,
          indicator == &quot;expectedvalue&quot;)
@@ -406,15 +466,27 @@ ggplot(heatwave_duration, aes(x = mean_estimate, y = model, color = scenario)) +
     axis.title.y = element_blank()  
   ) +
   labs(
-    title = &quot;Heatwave Count by Model and Scenario&quot;,
-    x = &quot;Mean Heatwave Count&quot;,
+    title = &quot;Heatwave Duration by Model and Scenario&quot;,
+    x = &quot;Mean Heatwave Duration&quot;,
     color = &quot;Scenario&quot;
   ) +
   scale_color_brewer(palette = &quot;YlOrBr&quot;) </code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
 </div>
-<div id="º-heating" class="section level1">
-<h1>35º heating</h1>
+<div id="tie-back-to-news-stories-and-human-costs"
+class="section level1">
+<h1>Tie back to news stories and human costs</h1>
+<p>what are the human costs of climate change going to be</p>
+<p>how will people see this in their own lives</p>
+<p><strong>extreme weather scenarios</strong></p>
+<p><u>what is the big call to action here ??</u></p>
+<p>feeling very … disillusioned with ‘democracy’ at the moment and dont
+want to tell people “oh just go vote” but i also dont want to tell
+people “okay no more plastic straws for you. you must bike
+everywhere”</p>
+<p><em>the vibe for this feels more like “hey dummy you need to realize
+that climate change is going to impact you. yes you!!” and less of “time
+to start composting”</em></p>
 <hr />
 <p>rmarkdown::render_site()</p>
 </div>

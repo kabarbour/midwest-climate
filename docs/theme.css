@@ -1,0 +1,17 @@
+/* TABLE OF CONTENTS FORMATTING */
+#TOC {
+  left: 30px;
+  width: 300px;
+  max-width: 90%;
+  overflow: auto;
+  color: #d95f0e;
+  border-radius: 3px;
+}
+
+.list-group-item.active,
+.list-group-item.active:focus,
+.list-group-item.active:hover {
+  z-index: 2;
+  color: white;
+  background-color: #d95f0e;
+}

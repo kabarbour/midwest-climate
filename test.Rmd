@@ -4,6 +4,13 @@ title: "Dumping Ground"
 Place to dump charts and stuff before moving to full document
 
 
+# Kaitlyn to dos 
+- theme css across document
+- fonts and branding
+- plotly - interactivity
+
+
+
 # Chart dumping ground
 
 ```{r}

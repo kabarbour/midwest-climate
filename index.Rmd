@@ -9,7 +9,7 @@ output:
     toc_float:
       collapsed: true
     toc_depth: 3
-    css: 
+    css: theme.css
     fig_width: 8.75
     self_contained: false
 ---
@@ -20,7 +20,9 @@ output:
 
 some text here about how midwesterners dont think climate change is an issue facing them
 
-some chart / info from ANES 
+give context and set up the problem in terms of midwesterners
+
+some chart / info from ANES
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -40,7 +42,6 @@ library(reshape2)
 library(RColorBrewer)
 
 ```
-
 
 ```{r}
 
@@ -66,13 +67,77 @@ climate_data$scenario <- factor(
 
 # News Stories
 
-insert links to news stories about increasing heatwaves & severe weather
+insert links to news stories / headlines about increasing heatwaves & severe weather
 
-make some graphics & hyperlink 
+make some graphics & hyperlink those images / links to their sources
 
+# 35º Heating
 
+what is the impact of 35º on people
+
+electricity / health / etc
+
+clickable buttons / tabs for the different degrees of heating
+
+map - highlight each midwestern city - size of bubble = days above current heatwaves
+
+various models are different colors - opacity to show the likelihood of different
+
+*should i handle threshold in this?*
+
+# Tmax 95 percentile
+
+localized to 95 percentile
+
+similar version of map above
+
+# Heatwave Count
+
+*heatwaves are getting more frequent.*
+
+```{r}
+
+heatwave_count <- climate_data %>%
+  filter(hazard == "heatwave_count",
+         indicator == "expectedvalue")
+
+average_increase <- heatwave_count %>%
+  group_by(scenario) %>%
+  summarize(avg_heatwave_count = mean(mean_estimate, na.rm = TRUE))
+
+print(average_increase)
+
+```
+
+*midwest can expect 6.4 -\> 7.5 heatwaves depending on warming scenario*
+
+may "only be" one heatwave but that has big toll
+
+show specific cities increasing
+
+```{r fig.height=15, fig.width=8}
+
+ggplot(heatwave_count, aes(x = mean_estimate, y = model, color = scenario)) +
+  geom_point(size = 5, alpha = 0.8) +  
+  scale_x_continuous(limits = c(3, 10)) + 
+  facet_grid(city ~ ., switch = "y") + 
+  theme_minimal() +
+  theme(
+    strip.text.y = element_text(angle = 0),  
+    axis.title.y = element_blank()  
+  ) +
+  labs(
+    title = "Heatwave Count by Model and Scenario",
+    x = "Mean Heatwave Count",
+    color = "Scenario"
+  ) +
+  scale_color_brewer(palette = "YlOrBr") 
+
+```
 
 # Heatwave Duration
+
+not only will there be more heatwaves, but they will be longer
 
 ```{r fig.height=15, fig.width=8}
 
@@ -90,22 +155,28 @@ ggplot(heatwave_duration, aes(x = mean_estimate, y = model, color = scenario)) +
     axis.title.y = element_blank()  
   ) +
   labs(
-    title = "Heatwave Count by Model and Scenario",
-    x = "Mean Heatwave Count",
+    title = "Heatwave Duration by Model and Scenario",
+    x = "Mean Heatwave Duration",
     color = "Scenario"
   ) +
   scale_color_brewer(palette = "YlOrBr") 
 
 ```
 
-# 35º heating 
+# Tie back to news stories and human costs
 
+what are the human costs of climate change going to be
 
+how will people see this in their own lives
 
+**extreme weather scenarios**
 
-----
+[what is the big call to action here ??]{.underline}
 
+feeling very ... disillusioned with 'democracy' at the moment and dont want to tell people "oh just go vote" but i also dont want to tell people "okay no more plastic straws for you. you must bike everywhere"
 
+*the vibe for this feels more like "hey dummy you need to realize that climate change is going to impact you. yes you!!" and less of "time to start composting"*
 
+------------------------------------------------------------------------
 
 rmarkdown::render_site()
