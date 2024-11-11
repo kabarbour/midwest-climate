@@ -6,7 +6,7 @@ output:
   html_document:
     code_folding: hide
     toc: true
-    
+    toc_float: true
     toc_depth: 3
     css: theme.css
     fig_width: 8.75

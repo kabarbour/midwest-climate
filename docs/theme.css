@@ -17,26 +17,3 @@
 }
 
 
-
-/* NAVBAR STUFF ? */
-
-.navbar-inverse {
-  background-color: #d95f0e;
-}
-.navbar-inverse .navbar-brand {
-  color: #white;
-}
-.navbar-inverse .navbar-nav>li>a {
-  color: #white;
-}
-.navbar-inverse .navbar-nav>.active>a {
-  background-color: #d95f0e;
-}
-.list-group-item.active {
-  background-color: #d95f0e;
-  border-color: #d95f0e;
-}
-item.active, .list-group-item.active:hover {
-  background-color: #d95f0e;
-  border-color: #d95f0e;
-}
