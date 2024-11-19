@@ -1,37 +1,64 @@
 ---
 title: "Dumping Ground"
 ---
-Place to dump charts and stuff before moving to full document
 
+# Kaitlyn to dos
 
-# Kaitlyn to dos 
-- theme css across document
-- fonts and branding
-- plotly - interactivity
+## R stuff
 
+-   plotly - interactivity ?
 
+-   ~~1995 - 2014 -\> "recent historical"~~
 
-# Chart dumping ground
+-   figure out spacing between sections? why is there no gap?
 
-```{r}
+## Research 
 
-heatwave_models <- climate_data %>%
-  filter(hazard == "heatwave_count",
-         indicator == "exceedanceprob",
-         scenario != "1995 - 2014")
+-   news stories for section
 
+-   Case study table?
 
+    -   “What if you were able to sort the projects by their category (adaptation, mitigation) but also by topic (transportation, food systems, etc). if you really wanted to get fancy - maybe you even sort by things like city type (small, medium, large) or by budget (high to low) or project lead (government, non profit, etc) to highlight the diverse means for change“
+
+## Writing 
+
+-   better Midwest health impacts
+
+    -   <https://nca2014.globalchange.gov/report/regions/midwest>
+
+    -   <https://nca2023.globalchange.gov/chapter/24/>
+
+    -   <https://climatechange.chicago.gov/climate-impacts/climate-impacts-midwest#Reference%201>
+
+```{=html}
+<!-- -->
 ```
+-   Case Study section
 
-```{r}
+    -   **mitigation** vs **adaptation**
 
-ggplot(heatwave_models, aes(x = scenario, y = mean_estimate, color = model)) +
-  geom_point(size = 2, alpha = 0.7) +  
-    facet_grid(~ threshold) +  # Facet by scenario
-  labs(title = "Heatwave Count Exceedance Probability by Threshold and Warming Scenario",
-       x = "Warming Scenario",
-       y = "Mean Estimate of Exceedance Probability") +
-  ylim(0, 1) +
-  theme_minimal() 
+    -   pick a few of the case studies to highlight - create charts for that city in particular
 
+        -   what challenges are the facing/what are they most at risk for
+
+        -   what actions are they taking
+
+        -   how are their actions intended to help mitigate or adapt to their challenges
+
+        -   what is the outcome/result (so far)?
+
+## Design
+
+-   make calendar chart thing for increased heat visual
+
+```{=html}
+<!-- -->
 ```
+-   theme css across document
+
+    -   fonts and branding
+
+```{=html}
+<!-- -->
+```
+-   create graphics

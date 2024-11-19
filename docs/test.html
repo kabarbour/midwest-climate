@@ -268,30 +268,82 @@ $(document).ready(function () {
 </div>
 
 
-<p>Place to dump charts and stuff before moving to full document</p>
 <div id="kaitlyn-to-dos" class="section level1">
 <h1>Kaitlyn to dos</h1>
+<div id="r-stuff" class="section level2">
+<h2>R stuff</h2>
 <ul>
-<li>theme css across document</li>
-<li>fonts and branding</li>
-<li>plotly - interactivity</li>
+<li><p>plotly - interactivity ?</p></li>
+<li><p><del>1995 - 2014 -&gt; “recent historical”</del></p></li>
+<li><p>figure out spacing between sections? why is there no
+gap?</p></li>
 </ul>
 </div>
-<div id="chart-dumping-ground" class="section level1">
-<h1>Chart dumping ground</h1>
-<pre class="r"><code>heatwave_models &lt;- climate_data %&gt;%
-  filter(hazard == &quot;heatwave_count&quot;,
-         indicator == &quot;exceedanceprob&quot;,
-         scenario != &quot;1995 - 2014&quot;)</code></pre>
-<pre class="r"><code>ggplot(heatwave_models, aes(x = scenario, y = mean_estimate, color = model)) +
-  geom_point(size = 2, alpha = 0.7) +  
-    facet_grid(~ threshold) +  # Facet by scenario
-  labs(title = &quot;Heatwave Count Exceedance Probability by Threshold and Warming Scenario&quot;,
-       x = &quot;Warming Scenario&quot;,
-       y = &quot;Mean Estimate of Exceedance Probability&quot;) +
-  ylim(0, 1) +
-  theme_minimal() </code></pre>
-<p><img src="test_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div id="research" class="section level2">
+<h2>Research</h2>
+<ul>
+<li><p>news stories for section</p></li>
+<li><p>Case study table?</p>
+<ul>
+<li>“What if you were able to sort the projects by their category
+(adaptation, mitigation) but also by topic (transportation, food
+systems, etc). if you really wanted to get fancy - maybe you even sort
+by things like city type (small, medium, large) or by budget (high to
+low) or project lead (government, non profit, etc) to highlight the
+diverse means for change“</li>
+</ul></li>
+</ul>
+</div>
+<div id="writing" class="section level2">
+<h2>Writing</h2>
+<ul>
+<li><p>better Midwest health impacts</p>
+<ul>
+<li><p><a href="https://nca2014.globalchange.gov/report/regions/midwest"
+class="uri">https://nca2014.globalchange.gov/report/regions/midwest</a></p></li>
+<li><p><a href="https://nca2023.globalchange.gov/chapter/24/"
+class="uri">https://nca2023.globalchange.gov/chapter/24/</a></p></li>
+<li><p><a
+href="https://climatechange.chicago.gov/climate-impacts/climate-impacts-midwest#Reference%201"
+class="uri">https://climatechange.chicago.gov/climate-impacts/climate-impacts-midwest#Reference%201</a></p></li>
+</ul></li>
+</ul>
+<!-- -->
+<ul>
+<li><p>Case Study section</p>
+<ul>
+<li><p><strong>mitigation</strong> vs
+<strong>adaptation</strong></p></li>
+<li><p>pick a few of the case studies to highlight - create charts for
+that city in particular</p>
+<ul>
+<li><p>what challenges are the facing/what are they most at risk
+for</p></li>
+<li><p>what actions are they taking</p></li>
+<li><p>how are their actions intended to help mitigate or adapt to their
+challenges</p></li>
+<li><p>what is the outcome/result (so far)?</p></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<div id="design" class="section level2">
+<h2>Design</h2>
+<ul>
+<li>make calendar chart thing for increased heat visual</li>
+</ul>
+<!-- -->
+<ul>
+<li><p>theme css across document</p>
+<ul>
+<li>fonts and branding</li>
+</ul></li>
+</ul>
+<!-- -->
+<ul>
+<li>create graphics</li>
+</ul>
+</div>
 </div>
 
 

@@ -17,11 +17,23 @@ output:
 
 # Introduction
 
-some text here about how midwesterners dont think climate change is an issue facing them
+Midwesterners don't think climate change is an issue facing them.
 
-give context and set up the problem in terms of midwesterners
+In [surveys](https://climatecommunication.yale.edu/visualizations-data/ycom-us/), most Midwestern states show lower-than-national-average rates of people who "believe global warming is happening" and are "worried about global warming." Additionally, scores for the belief that "global warming will harm me personally" are much lower across the Midwest compared to other states.
 
-some chart / info from ANES
+It makes sense when you think about it: many Midwesterners don't visibly face rising sea levels or increasing storm intensity. We don't experience huge flooding events from hurricanes or massive wildfires like areas with large forests.
+
+For Midwesterners, the main concern about climate change is increasing temperatures. We're likely to have both **hotter days** than in previous years and **more of those hot days** overall.
+
+There are obvious [agricultural concerns](https://www.ers.usda.gov/amber-waves/2024/march/ers-research-models-future-effects-of-climate-change-on-corn-and-soybean-yields-production-and-exports/#) impacting the Midwest, as corn and soybeans make up 75% of farmland. The corn market is projected to slow in yield growth, while soybean growth is projected to actually decrease.
+
+This impacts people on a personal level as well. Exposure to heat increases the likelihood of **heat stress**—a condition where the body is unable to effectively regulate its temperature due to excessive environmental heat exposure.
+
+Heat stress is the [leading cause](https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health) of weather-related deaths. It can exacerbate underlying illnesses including cardiovascular disease, diabetes, mental health conditions, and asthma. It can also increase the risk of accidents and transmission of some infectious diseases.
+
+Heat stress is likely to increase as temperatures and humidity continue to rise in this region, resulting in **more heat-related deaths and illnesses**.
+
+In the United States, [mortality increases](https://nca2014.globalchange.gov/report/regions/midwest) 4% during heat waves compared with non-heat wave days. Heat-related mortality for people over 65 years of age [also increased](https://www.who.int/news-room/fact-sheets/detail/climate-change-heat-and-health) by approximately 85% between 2000–2004 and 2017–2021.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -42,9 +54,9 @@ library(RColorBrewer)
 
 ```
 
-```{r}
+```{r read in data, include=FALSE}
 
-climate_data_all <- read_csv("climate-data.csv", 
+climate_data <- read_csv("climate-data.csv", 
     col_types = cols(loc_id = col_character()))
 #View(climate_data)
 
@@ -54,100 +66,468 @@ cities <- c("Kansas City", "Omaha", "Minneapolis", "Louisville",
 hazards <- c("Tmax95pctl_days", "Tmax40_days", "Tmax35_days", 
              "Twb31_days", "heatwave_duration", "heatwave_count", "drought_days")
 
-climate_data <- climate_data_all %>%
+climate_data <- climate_data %>%
   filter(city %in% cities, hazard %in% hazards)
 
+# CONVERT SCENARIOS TO FACTOR 
 climate_data$scenario <- factor(
   climate_data$scenario,
   levels = c("1995 - 2014", "1.5C", "2.0C", "3.0C")
 )
 
+levels(climate_data$scenario)[levels(climate_data$scenario) == "1995 - 2014"] <- "Recent Historical"
+
 ```
 
 # News Stories
 
-insert links to news stories / headlines about increasing heatwaves & severe weather
+It's easy to envision the hypothetical impact of rising temperatures — yet we can already see the real effects in communities across the Midwest.
 
-make some graphics & hyperlink those images / links to their sources
+*insert links to news stories / headlines about increasing heatwaves & severe weather*
 
-# 35º Heating
+*SJCHD cooling centers opening*
 
-what is the impact of 35º on people
+*make some graphics & hyperlink those images / links to their sources*
 
-electricity / health / etc
+# Increased Temperatures
 
-clickable buttons / tabs for the different degrees of heating
+In a dataset from the World Resources Institute, we can see the impact of various levels of warming on temperature projections for cities in the Midwest. This dataset examines a variety of climate hazards (defined as "a defined meteorological condition that without mitigation causes or exacerbates a negative societal impact") on cities across the world. The Midwest cities included are Kansas City, Omaha, Minneapolis, Louisville, Chicago, Indianapolis, Milwaukee, Cincinnati, Columbus, Detroit, and Cleveland.
 
-map - highlight each midwestern city - size of bubble = days above current heatwaves
+## 35º of warming {.tabset .tabset-fade .tabset-pills}
 
-various models are different colors - opacity to show the likelihood of different
+An important indicator to consider is the threshold of 35°C (95°F).
 
-*should i handle threshold in this?*
+The metric `Tmax35_days` represents the annual count of days with maximum temperatures reaching or exceeding 35°C. This temperature threshold is widely regarded as a critical limit for human tolerance, as prolonged exposure to humid conditions at or above 35°C can be life-threatening.
 
-# Tmax 95 percentile
+By comparing different warming scenarios, we can evaluate the potential impacts on cities in the Midwest.
 
-localized to 95 percentile
+### Recent Historical (1995 - 2014)
 
-similar version of map above
+```{r chart 1 - recent hist, fig.width=8, fig.height=6}
 
-# Heatwave Count
+chart1_35_data <- climate_data %>%
+  filter(hazard == "Tmax35_days", indicator == "expectedvalue")
 
-*heatwaves are getting more frequent.*
+chart1_35_data_hist <- chart1_35_data %>%
+  filter(scenario == "Recent Historical")
+chart1_35_data_1 <- chart1_35_data %>%
+  filter(scenario == "1.5C")
+chart1_35_data_2<- chart1_35_data %>%
+  filter(scenario == "2.0C")
+chart1_35_data_3<- chart1_35_data%>%
+  filter(scenario == "3.0C")
 
-```{r}
+# Get state boundary data
+states_map <- map_data("state")
 
+# Define latitude and longitude bounds for the Midwest region
+midwest_bounds <- list(
+  xlim = c(-100, -80), # Longitude bounds
+  ylim = c(35, 50)     # Latitude bounds
+)
+
+
+# Create the map visualization
+
+ggplot() +
+  # Add state boundaries
+  geom_polygon(data = states_map, aes(x = long, y = lat, group = group), 
+               fill = "gray85", color = "white", size = 0.2) +
+  # Add city bubbles
+  geom_point(data = chart1_35_data_hist, 
+             aes(x = longitude, y = latitude, size = mean_estimate, 
+                 fill = round(mean_estimate), 
+                 color = round(mean_estimate)), # Match fill and color
+             alpha = 0.6, shape = 21, stroke = 1) + # Stroke for outline thickness
+  scale_size_continuous(
+    name = "Days over 35ºC", 
+    range = c(1, 17) # Increase bubble size range
+  ) +
+  scale_fill_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Use Brewer's yellow-to-red palette
+    direction = 1 # Ensure colors go from yellow (low) to red (high)
+  ) +
+  scale_color_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Match Brewer's palette for outline
+    direction = 1 # Ensure colors match fill
+  ) +
+  coord_fixed(xlim = midwest_bounds$xlim, ylim = midwest_bounds$ylim) + # Zoom to Midwest
+  labs(
+    title = "Days Over 35ºC Across Midwest Cities - Recent Historical",
+    subtitle = "Bubble size and color represent days over 35ºC"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12), # Customize facet labels
+    legend.position = "right", # Position legends to the right
+    axis.title = element_blank(), # Remove axis titles
+    axis.text = element_blank(),  # Remove axis text
+    axis.ticks = element_blank(), # Remove axis ticks
+    panel.grid = element_blank()  # Remove gridlines
+  )
+
+
+```
+
+### 1.5ºC Warming
+
+```{r chart 2 - 1.5C warming, fig.height=6, fig.width=8}
+# Create the map visualization
+ggplot() +
+  # Add state boundaries
+  geom_polygon(data = states_map, aes(x = long, y = lat, group = group), 
+               fill = "gray80", color = "white", size = 0.2) +
+  # Add city bubbles
+  geom_point(data = chart1_35_data_1, 
+             aes(x = longitude, y = latitude, size = mean_estimate, 
+                 fill = round(mean_estimate), 
+                 color = round(mean_estimate)), # Match fill and color
+             alpha = 0.6, shape = 21, stroke = 1) + # Stroke for outline thickness
+  scale_size_continuous(
+    name = "Days over 35ºC", 
+    range = c(1, 17) # Increase bubble size range
+  ) +
+  scale_fill_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Use Brewer's yellow-to-red palette
+    direction = 1 # Ensure colors go from yellow (low) to red (high)
+  ) +
+  scale_color_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Match Brewer's palette for outline
+    direction = 1 # Ensure colors match fill
+  ) +
+  coord_fixed(xlim = midwest_bounds$xlim, ylim = midwest_bounds$ylim) + # Zoom to Midwest
+  labs(
+    title = "Days Over 35ºC Across Midwest Cities - 1.5ºC Warming",
+    subtitle = "Bubble size and color represent days over 35ºC"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12), # Customize facet labels
+    legend.position = "right", # Position legends to the right
+    axis.title = element_blank(), # Remove axis titles
+    axis.text = element_blank(),  # Remove axis text
+    axis.ticks = element_blank(), # Remove axis ticks
+    panel.grid = element_blank()  # Remove gridlines
+  )
+
+```
+
+### 2ºC Warming
+
+```{r chart 3 - 2C warming, fig.height=6, fig.width=8}
+# Create the map visualization
+ggplot() +
+  # Add state boundaries
+  geom_polygon(data = states_map, aes(x = long, y = lat, group = group), 
+               fill = "gray80", color = "white", size = 0.2) +
+  # Add city bubbles
+  geom_point(data = chart1_35_data_2, 
+             aes(x = longitude, y = latitude, size = mean_estimate, 
+                 fill = round(mean_estimate), 
+                 color = round(mean_estimate)), # Match fill and color
+             alpha = 0.6, shape = 21, stroke = 1) + # Stroke for outline thickness
+  scale_size_continuous(
+    name = "Days over 35ºC", 
+    range = c(1, 17) # Increase bubble size range
+  ) +
+  scale_fill_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Use Brewer's yellow-to-red palette
+    direction = 1 # Ensure colors go from yellow (low) to red (high)
+  ) +
+  scale_color_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Match Brewer's palette for outline
+    direction = 1 # Ensure colors match fill
+  ) +
+  coord_fixed(xlim = midwest_bounds$xlim, ylim = midwest_bounds$ylim) + # Zoom to Midwest
+  labs(
+    title = "Days Over 35ºC Across Midwest Cities - 2.0ºC Warming",
+    subtitle = "Bubble size and color represent days over 35ºC"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12), # Customize facet labels
+    legend.position = "right", # Position legends to the right
+    axis.title = element_blank(), # Remove axis titles
+    axis.text = element_blank(),  # Remove axis text
+    axis.ticks = element_blank(), # Remove axis ticks
+    panel.grid = element_blank()  # Remove gridlines
+  )
+
+```
+
+### 3ºC Warming
+
+```{r chart 4 - 3C warming, fig.height=6, fig.width=8}
+# Create the map visualization
+ggplot() +
+  # Add state boundaries
+  geom_polygon(data = states_map, aes(x = long, y = lat, group = group), 
+               fill = "gray80", color = "white", size = 0.2) +
+  # Add city bubbles
+  geom_point(data = chart1_35_data_3, 
+             aes(x = longitude, y = latitude, size = mean_estimate, 
+                 fill = round(mean_estimate), 
+                 color = round(mean_estimate)), # Match fill and color
+             alpha = 0.6, shape = 21, stroke = 1) + # Stroke for outline thickness
+  scale_size_continuous(
+    name = "Days over 35ºC", 
+    range = c(1, 17) # Increase bubble size range
+  ) +
+  scale_fill_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Use Brewer's yellow-to-red palette
+    direction = 1 # Ensure colors go from yellow (low) to red (high)
+  ) +
+  scale_color_distiller(
+    name = "Rounded Days", 
+    palette = "YlOrRd", # Match Brewer's palette for outline
+    direction = 1 # Ensure colors match fill
+  ) +
+  coord_fixed(xlim = midwest_bounds$xlim, ylim = midwest_bounds$ylim) + # Zoom to Midwest
+  labs(
+    title = "Days Over 35ºC Across Midwest Cities - 3.0ºC Warming",
+    subtitle = "Bubble size and color represent days over 35ºC"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12), # Customize facet labels
+    legend.position = "right", # Position legends to the right
+    axis.title = element_blank(), # Remove axis titles
+    axis.text = element_blank(),  # Remove axis text
+    axis.ticks = element_blank(), # Remove axis ticks
+    panel.grid = element_blank()  # Remove gridlines
+  )
+
+```
+
+##  {.unlisted .unnumbered}
+
+```{r table - increase in 35c by city}
+
+# Group by city and scenario, calculate average mean_estimate
+average_temp_days <- chart1_35_data %>%
+  group_by(city, scenario) %>%
+  summarize(average_days = mean(mean_estimate, na.rm = TRUE), .groups = "drop")
+
+# Pivot data to have scenarios as columns
+pivoted_temp_days <- average_temp_days %>%
+  pivot_wider(
+    names_from = scenario,
+    values_from = average_days
+  )
+
+# Calculate the increase relative to "recent historical"
+pivoted_temp_days <- pivoted_temp_days %>%
+  mutate(
+    `1.5C Increase` = `1.5C` - `Recent Historical`,
+    `2.0C Increase` = `2.0C` - `Recent Historical`,
+    `3.0C Increase` = `3.0C` - `Recent Historical`
+  )
+
+# Round data 
+pivoted_temp_days <- pivoted_temp_days %>%
+  mutate(across(where(is.numeric), ~ round(., 2)))
+
+
+knitr::kable(
+  pivoted_temp_days %>% 
+    select(city, `Recent Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
+)
+```
+
+Most of the maps reveal at least one additional day exceeding 95°F under higher warming scenarios.
+
+This trend is very clear in the 2.0°C and 3.0°C warming scenarios, with the most drastic effects observed in southern cities such as Kansas City, Omaha, Louisville, and Cincinnati.
+
+Notably, Minneapolis stands out with a significant increase under extreme models, matching levels seen in cities like Chicago and Louisville, which are located much further south.
+
+Clearly, these high temperatures are dangerous and likely to cause heatstroke or heat stress in people.
+
+Different regions have varying levels of adaptation to hot weather. What insights can we gain by comparing the model's output to local temperature norms?
+
+## Local Maximum Temperatures
+
+Considering local temperature maximums is critical when examining climate change models, as communities are often adapted to their historical climate patterns. Infrastructure, public health systems, and daily life are built around these norms, meaning that even modest deviations from local temperature thresholds can have outsized impacts.
+
+The indicator `Tmax95pctl_days` measures the annual number of days when the daily high temperature meets or exceeds the 95th percentile for a given location, based on a 40-year baseline (1980–2019). By focusing on locally defined extremes, this metric highlights the potential for disruption when temperatures exceed what residents and infrastructure are prepared to handle.
+
+```{r table - increase in 95th pct by city}
+
+chart2_95_data <- climate_data %>%
+  filter(hazard == "Tmax95pctl_days", indicator == "expectedvalue")
+
+# Group by city and scenario, calculate average mean_estimate
+average_95temp_days <- chart2_95_data %>%
+  group_by(city, scenario) %>%
+  summarize(average_95temp_days = mean(mean_estimate, na.rm = TRUE), .groups = "drop")
+
+# Pivot data to have scenarios as columns
+pivoted_95temp_days <- average_95temp_days %>%
+  pivot_wider(
+    names_from = scenario,
+    values_from = average_95temp_days
+  )
+
+# Calculate the increase relative to "recent historical"
+pivoted_95temp_days <- pivoted_95temp_days %>%
+  mutate(
+    `1.5C Increase` = `1.5C` - `Recent Historical`,
+    `2.0C Increase` = `2.0C` - `Recent Historical`,
+    `3.0C Increase` = `3.0C` - `Recent Historical`
+  )
+
+# Round data 
+pivoted_95temp_days <- pivoted_95temp_days %>%
+  mutate(across(where(is.numeric), ~ round(., 2)))
+
+
+knitr::kable(
+  pivoted_95temp_days %>% 
+    select(city, `Recent Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
+)
+```
+
+This table highlights the significant increases in the number of extreme heat days per city, with some locations experiencing **nearly two additional weeks of days exceeding the local 95th percentile** at the most extreme warming scenarios.
+
+```{r chart - 95 pctile increase by scenario, fig.width=12}
+
+bubble_data <- pivoted_95temp_days %>%
+  left_join(chart2_95_data %>% select(city, latitude, longitude) %>% distinct(), by = "city") %>%
+  pivot_longer(
+    cols = c("1.5C Increase", "2.0C Increase", "3.0C Increase"),
+    names_to = "scenario",
+    values_to = "increase"
+  )
+
+
+# Create the faceted map
+ggplot() +
+  # Add state boundaries
+  geom_polygon(data = states_map, aes(x = long, y = lat, group = group), 
+               fill = "gray85", color = "white", size = 0.2) +
+  # Add city bubbles sized by the increase in days
+  geom_point(data = bubble_data, 
+             aes(x = longitude, y = latitude, size = increase, 
+                 fill = round(increase), 
+                 color = round(increase)), # Match fill and color
+             alpha = 0.7, shape = 21, stroke = 0.8) + # Adjust transparency and outline
+  scale_size_continuous(
+    name = "Increase in Days", 
+    range = c(0, 12) # Adjust bubble size for better differentiation
+  ) +
+  scale_fill_distiller(
+    name = "Increase", 
+    palette = "YlOrRd", 
+    direction = 1
+  ) +
+  scale_color_distiller(
+    name = "Increase", 
+    palette = "YlOrRd", 
+    direction = 1
+  ) +
+  coord_fixed(xlim = midwest_bounds$xlim, ylim = midwest_bounds$ylim) + # Midwest focus
+  labs(
+    title = "Increase in Days Over 95th Percentile Across Midwest Cities",
+    subtitle = "Bubble size and color represent the increase in days under warming scenarios"
+  ) +
+   facet_wrap(~ scenario, nrow = 1) + # Arrange facets horizontally
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"), # Enhance facet labels
+    legend.position = "right", 
+    axis.title = element_blank(), 
+    axis.text = element_blank(),  
+    axis.ticks = element_blank(), 
+    panel.grid = element_blank()  
+  )
+
+
+```
+
+When plotted on a map, the distribution of increased extreme heat days across the Midwest becomes visually evident. The geographic variation highlights how different cities are projected to experience varying degrees of increase in days exceeding the local 95th percentile. This spatial pattern underscores regional differences in vulnerability to heat stress, with cities in the southern Midwest typically seeing larger increases, while northern cities also demonstrate significant shifts, particularly under more extreme warming scenarios.
+
+Once again, we note that Minneapolis faces significant temperature increases in the most extreme warming scenarios. Furthermore, all cities across the Midwest are likely to experience much warmer periods than they do currently.
+
+## ADD THE HYPOTHETICAL CALENDAR THING HERE
+
+# Increasing Heatwaves
+
+It is also crucial to consider heatwaves in addition to overall warmer temperatures when assessing climate change impacts. Heatwaves—defined as periods of abnormally hot weather—are typically marked by **three or more consecutive days where the daily high temperature meets or exceeds the local 90th percentile** for daily maximum temperatures. This metric measures the frequency of heatwaves, calculated as the number of distinct heatwaves per year.
+
+Heatwaves are becoming more frequent, further amplifying the risks associated with extreme heat. While general temperature increases are concerning, heatwaves present additional challenges, as they involve extended periods of high temperatures that strain public health systems, infrastructure, and energy resources. These extended heat events can be particularly hazardous, especially for vulnerable populations and regions unprepared for such prolonged extreme conditions.
+
+```{r table - count heatwave per warming scenario, message=FALSE}
+
+# FIND THE AVERAGE NUMBER OF HEATWAVES PER WARMING SCENARIO
 heatwave_count <- climate_data %>%
   filter(hazard == "heatwave_count",
          indicator == "expectedvalue")
 
-average_increase <- heatwave_count %>%
+average_heatwave_count <- heatwave_count %>%
   group_by(scenario) %>%
-  summarize(avg_heatwave_count = mean(mean_estimate, na.rm = TRUE))
+  summarize(avg_heatwave_count = mean(mean_estimate, na.rm = TRUE), .groups = "drop") 
 
-print(average_increase)
+knitr::kable(average_heatwave_count)
 
 ```
 
-*midwest can expect 6.4 -\> 7.5 heatwaves depending on warming scenario*
+The Midwest can expect an increase in the frequency of heatwaves, with the average number of heatwaves per year rising from 6.4 in the `Recent Historical` scenario to 7.5 in the worst case `3.0C` scenario. While this might seem like only one additional heatwave, it’s important to consider the cumulative toll these events can have, especially on vulnerable populations. Even a single heatwave can have severe consequences, including heat-related illnesses, strain on healthcare systems, power grids, and overall community resilience.
 
-may "only be" one heatwave but that has big toll
+```{r chart - heatwave count by city and scenario, fig.width=8}
 
-show specific cities increasing
-
-```{r fig.height=15, fig.width=8}
-
-ggplot(heatwave_count, aes(x = mean_estimate, y = model, color = scenario)) +
+ggplot(heatwave_count, aes(x = mean_estimate, y = city, color = scenario)) +
   geom_point(size = 5, alpha = 0.8) +  
   scale_x_continuous(limits = c(3, 10)) + 
-  facet_grid(city ~ ., switch = "y") + 
+  scale_y_discrete(limits=rev) +
   theme_minimal() +
   theme(
     strip.text.y = element_text(angle = 0),  
     axis.title.y = element_blank()  
   ) +
   labs(
-    title = "Heatwave Count by Model and Scenario",
+    title = "Heatwave Count by City and Scenario",
     x = "Mean Heatwave Count",
     color = "Scenario"
   ) +
   scale_color_brewer(palette = "YlOrBr") 
-
 ```
+
+```{r table - heatwave count by city}
+
+# FIND THE AVERAGE NUMBER OF HEATWAVES PER WARMING SCENARIO PER CITY
+average_heatwave_city <- heatwave_count %>%
+  group_by(city,scenario) %>%
+  summarize(average_heatwave_city = mean(mean_estimate, na.rm = TRUE), .groups = "drop")
+
+average_heatwave_city <- average_heatwave_city %>%
+  pivot_wider(
+    names_from = scenario, 
+    values_from = average_heatwave_city
+  )%>%
+  mutate(across(where(is.numeric), ~ round(., 1)))
+
+knitr::kable(average_heatwave_city)
+```
+
+Cities across the Midwest are projected to experience varying shifts in heatwave frequency. For example, **Chicago** may see a slight increase, from 6.9 in the Recent Historical scenario to 7.8 in the 3.0C scenario, while cities like **Cincinnati** and **Louisville** are projected to see larger increases, with **Cincinnati** moving from 6.3 to 8.0 and **Louisville** from 6.5 to 7.4. Even small shifts in heatwave frequency can significantly affect public health, particularly for elderly, low-income, and other vulnerable groups who may struggle to cope with extended periods of extreme heat. This emphasizes the need for proactive heatwave preparedness and climate adaptation strategies.
 
 # Heatwave Duration
 
-not only will there be more heatwaves, but they will be longer
+Not only will there be more heatwaves, but they are also likely to be **longer**. The length of heatwaves is a critical factor to consider, as prolonged periods of extreme heat can have even greater impacts on public health, infrastructure, and the environment.
 
-```{r fig.height=15, fig.width=8}
+We calculated this hazard as the **length in days of the longest heatwave in a year**, with a heatwave defined as **three or more consecutive days where the daily high temperature meets or exceeds the local 90th percentile for daily maximum** temperatures. As temperatures continue to rise, the duration of heatwaves is expected to increase, meaning that communities may face extended periods of extreme heat, which can overwhelm cooling systems, increase the risk of heat-related illnesses, and put additional strain on energy resources.
 
-heatwave_duration <- climate_data %>%
-  filter(hazard == "heatwave_duration",
-         indicator == "expectedvalue")
+```{r heatwave duration by model, fig.width=8}
 
-ggplot(heatwave_duration, aes(x = mean_estimate, y = model, color = scenario)) +
+ggplot(heatwave_duration, aes(x = mean_estimate, y = city, color = scenario)) +
   geom_point(size = 5, alpha = 0.8) +  
   scale_x_continuous(limits = c(0, 24)) + 
-  facet_grid(city ~ ., switch = "y") + 
   theme_minimal() +
   theme(
     strip.text.y = element_text(angle = 0),  
@@ -155,27 +535,64 @@ ggplot(heatwave_duration, aes(x = mean_estimate, y = model, color = scenario)) +
   ) +
   labs(
     title = "Heatwave Duration by Model and Scenario",
-    x = "Mean Heatwave Duration",
+    x = "Longest Heatwave Duration",
     color = "Scenario"
   ) +
   scale_color_brewer(palette = "YlOrBr") 
 
 ```
 
+This shows the average duration (in days) of the longest heatwave per year under different warming scenarios. This indicates that with higher warming, not only will heatwaves become more frequent, but they will also last longer, exacerbating the potential impacts on public health and infrastructure.
+
+Most models show that the longest heatwaves in the **Recent Historical** period range between **8 and 15 days** in duration across the Midwest cities. However, some cities are already experiencing heatwaves that last longer, with durations approaching or exceeding **three weeks** in certain scenarios.
+
+For example, **Chicago** and **Kansas City** have the longest heatwaves, with durations of **13.0** and **13.8** days, respectively, in the **Recent Historical** period. These cities, especially in the southern part of the Midwest, are on the higher end of the scale.
+
+As we move into higher warming scenarios, many cities will see these durations extend even further, with some reaching over **three weeks**. In the **3.0C** scenario, cities like **Chicago** (19.6 days), **Indianapolis** (18.1 days), and **Minneapolis** (19.1 days) will experience heatwaves that last well beyond **three weeks**, adding even more strain on infrastructure and increasing risks for vulnerable populations.
+
+```{r table - heatwave duration per city, fig.width=8}
+
+# FIND AVERAGE LENGTH OF LONGEST HEATWAVE PER CITY PER SCENARIO
+average_duration_city <- heatwave_duration %>%
+  group_by(city,scenario) %>%
+  summarize(average_heatwave_duration = mean(mean_estimate, na.rm = TRUE), .groups = "drop") 
+
+average_duration_city <- average_duration_city %>%
+  pivot_wider(
+    names_from = scenario, 
+    values_from = average_heatwave_duration
+  )%>%
+  mutate(across(where(is.numeric), ~ round(., 1)))
+
+knitr::kable(average_duration_city)
+
+```
+
+Looking at the shift from **Recent Historical** to the **1.5C**, **2.0C**, and **3.0C** scenarios, we see that all cities are expected to experience an increase in the number of days with heatwaves, with some cities facing substantial jumps in heatwave length.
+
+-   **Chicago**, for instance, will see a slight decrease in heatwave duration in the **1.5C** scenario (12.8 days), but by the **3.0C** scenario, the average duration will increase by 6.6 days, reaching **19.6** days. This marks a significant extension of the longest heatwave each year.
+
+-   **Kansas City** experiences the longest heatwaves in the historical scenario (**13.8** days), which rise significantly to **18.0** days by the **3.0C** scenario, marking a jump of about 4.2 days.
+
+-   **Milwaukee** will experience a considerable jump in heatwave length from **11.5** days in the **Recent Historical** scenario to **18.9** days under the **3.0C** scenario, adding over **7 days** to the longest heatwave of the year.
+
+-   **Minneapolis**, traditionally a cooler city, will see an increase in heatwave duration from **10.7** days to **19.1** days, a striking rise of nearly 9 days, especially given its northern location.
+
 # Tie back to news stories and human costs
 
-what are the human costs of climate change going to be
+The human costs of climate change are expected to be profound and wide-reaching, impacting individuals on multiple fronts.
 
-how will people see this in their own lives
+As heatwaves become more frequent and intense, people will experience increased health risks, including heat exhaustion, heatstroke, and cardiovascular problems, particularly among vulnerable groups like the elderly, children, and those with pre-existing conditions. The strain on healthcare systems will grow, as more individuals seek treatment for heat-related illnesses.
 
-**extreme weather scenarios**
+Additionally, extreme heat will affect labor productivity, especially in outdoor and agricultural work, leading to economic losses. Beyond physical health, the mental toll of prolonged heat and environmental stress may increase, exacerbating anxiety and social disparities.
 
-[what is the big call to action here ??]{.underline}
+People will also face disruptions to daily life through higher energy costs, reduced water availability, and damage to infrastructure, making it harder for communities to adapt and thrive.
 
-feeling very ... disillusioned with 'democracy' at the moment and dont want to tell people "oh just go vote" but i also dont want to tell people "okay no more plastic straws for you. you must bike everywhere"
+Ultimately, the impacts of climate change will make everyday life more challenging, particularly for those who are already marginalized or economically vulnerable.
 
-*the vibe for this feels more like "hey dummy you need to realize that climate change is going to impact you. yes you!!" and less of "time to start composting"*
+*LINK TO NEXT PAGE OF CASE STUDIES*
 
 ------------------------------------------------------------------------
 
 rmarkdown::render_site()
+
