@@ -6,14 +6,15 @@ output:
   html_document:
     code_folding: hide
     toc: true
-    toc_float: true
+    toc_float:
+      collapsed: true
     toc_depth: 3
     css: theme.css
     fig_width: 8.75
     self_contained: false
 ---
 
-![](images/header.png)
+<link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
 
 # Introduction
 
@@ -23,7 +24,7 @@ In [surveys](https://climatecommunication.yale.edu/visualizations-data/ycom-us/)
 
 It makes sense when you think about it: many Midwesterners don't visibly face rising sea levels or increasing storm intensity. We don't experience huge flooding events from hurricanes or massive wildfires like areas with large forests.
 
-For Midwesterners, the main concern about climate change is increasing temperatures. We're likely to have both **hotter days** than in previous years and **more of those hot days** overall.
+**For Midwesterners, the main concern about climate change is increasing temperatures. We're likely to have both hotter days than in previous years and more of those hot days overall.**
 
 There are obvious [agricultural concerns](https://www.ers.usda.gov/amber-waves/2024/march/ers-research-models-future-effects-of-climate-change-on-corn-and-soybean-yields-production-and-exports/#) impacting the Midwest, as corn and soybeans make up 75% of farmland. The corn market is projected to slow in yield growth, while soybean growth is projected to actually decrease.
 
@@ -42,14 +43,9 @@ options(scipen=999) #prevent it from using scientific notation when knitting htm
 library(tidyverse)
 library(ggplot2)
 library(readr)
-library(cowplot)
-library(ggalt)
-library(ggtext)
+
 library(plotly)
-library(DT)
-library(broom)
-library(tufte)
-library(reshape2)
+
 library(RColorBrewer)
 
 ```
@@ -83,17 +79,33 @@ levels(climate_data$scenario)[levels(climate_data$scenario) == "1995 - 2014"] <-
 
 It's easy to envision the hypothetical impact of rising temperatures — yet we can already see the real effects in communities across the Midwest.
 
-*insert links to news stories / headlines about increasing heatwaves & severe weather*
+![](images/news_stories.png)
 
-*SJCHD cooling centers opening*
+Cooling centers are often opened to support at-risk communities and safeguard vulnerable populations from heat stroke.
 
-*make some graphics & hyperlink those images / links to their sources*
+The rise in heat waves is also evident in social media posts from local National Weather Service accounts. These posts aim to inform and prepare communities, offering a journalistic perspective on notifications and the history of heat waves impacting the Midwest.
 
-# Increased Temperatures
+```{r echo=FALSE,out.width="19%", out.height="20%",fig.cap="Tweets from local NWS Twitter Accounts",fig.show='hold',fig.align='center'}
+
+knitr::include_graphics(c("images/indy2.png", "images/indy.png","images/kansascity.png", "images/chicago.png", "images/northernin.png"))
+
+```
+
+# Increasing Temperatures
 
 In a dataset from the World Resources Institute, we can see the impact of various levels of warming on temperature projections for cities in the Midwest. This dataset examines a variety of climate hazards (defined as "a defined meteorological condition that without mitigation causes or exacerbates a negative societal impact") on cities across the world. The Midwest cities included are Kansas City, Omaha, Minneapolis, Louisville, Chicago, Indianapolis, Milwaukee, Cincinnati, Columbus, Detroit, and Cleveland.
 
-## 35º of warming {.tabset .tabset-fade .tabset-pills}
+The models produce a variety of different warming scenarios and what they call 'center point years' that identify a year for when that level of warming will be achieved.
+
+```{r echo=FALSE, out.width="49%",fig.cap="Center Point Years from WRI Data",fig.show='hold',fig.align='center'}
+
+knitr::include_graphics(c("images/centerpoint_2.png", "images/centerpoint.png"))
+
+```
+
+Some models already have us as passing the first threshold (1.5ºC) and predict that we will pass the second threshold (2.0ºC) by 2024. The final threshold listed (3.0ºC) lists a variety of years, with a range of years between as soon as 2028 and as late as 2086 for other models.
+
+## 35º of warming {.tabset}
 
 An important indicator to consider is the threshold of 35°C (95°F).
 
@@ -308,6 +320,12 @@ ggplot() +
 
 ##  {.unlisted .unnumbered}
 
+Most of the maps reveal at least one additional day exceeding 95°F under higher warming scenarios.
+
+This trend is very clear in the 2.0°C and 3.0°C warming scenarios, with the most drastic effects observed in southern cities such as Kansas City, Omaha, Louisville, and Cincinnati.
+
+Notably, Minneapolis stands out with a significant increase under extreme models, matching levels seen in cities like Chicago and Louisville, which are located much further south.
+
 ```{r table - increase in 35c by city}
 
 # Group by city and scenario, calculate average mean_estimate
@@ -340,12 +358,6 @@ knitr::kable(
     select(city, `Recent Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
 )
 ```
-
-Most of the maps reveal at least one additional day exceeding 95°F under higher warming scenarios.
-
-This trend is very clear in the 2.0°C and 3.0°C warming scenarios, with the most drastic effects observed in southern cities such as Kansas City, Omaha, Louisville, and Cincinnati.
-
-Notably, Minneapolis stands out with a significant increase under extreme models, matching levels seen in cities like Chicago and Louisville, which are located much further south.
 
 Clearly, these high temperatures are dangerous and likely to cause heatstroke or heat stress in people.
 
@@ -454,7 +466,19 @@ When plotted on a map, the distribution of increased extreme heat days across th
 
 Once again, we note that Minneapolis faces significant temperature increases in the most extreme warming scenarios. Furthermore, all cities across the Midwest are likely to experience much warmer periods than they do currently.
 
-## ADD THE HYPOTHETICAL CALENDAR THING HERE
+But what does this look like to the average person? Does this translate into a concrete impact on everyday lives?
+
+If we were to draw this out on a calendar, an increase of up to two weeks of much warmer temperature appears pretty extreme.
+
+Here we take weather data from Chicago in 2024 where temperatures were at or above the 95th percentile for heat (about 87ºF) and place it on a calendar. Next to it is what summers could look like at the estimated rate of warming.
+
+```{r echo=FALSE,out.width="49%", out.height="20%",fig.cap="Days above 95th Percentile, 2024 & Potential 2029",fig.show='hold',fig.align='center'}
+
+knitr::include_graphics(c("images/2024.png", "images/2029.png"))
+
+```
+
+If warming continues at the predicted rates, some months could have nearly more days above 87º than not.
 
 # Increasing Heatwaves
 
@@ -521,9 +545,13 @@ Cities across the Midwest are projected to experience varying shifts in heatwave
 
 Not only will there be more heatwaves, but they are also likely to be **longer**. The length of heatwaves is a critical factor to consider, as prolonged periods of extreme heat can have even greater impacts on public health, infrastructure, and the environment.
 
-We calculated this hazard as the **length in days of the longest heatwave in a year**, with a heatwave defined as **three or more consecutive days where the daily high temperature meets or exceeds the local 90th percentile for daily maximum** temperatures. As temperatures continue to rise, the duration of heatwaves is expected to increase, meaning that communities may face extended periods of extreme heat, which can overwhelm cooling systems, increase the risk of heat-related illnesses, and put additional strain on energy resources.
+This hazard is calculated as the **length in days of the longest heatwave in a year**, with a heatwave defined as **three or more consecutive days where the daily high temperature meets or exceeds the local 90th percentile for daily maximum** temperatures. As temperatures continue to rise, the duration of heatwaves is expected to increase, meaning that communities may face extended periods of extreme heat, which can overwhelm cooling systems, increase the risk of heat-related illnesses, and put additional strain on energy resources.
 
 ```{r heatwave duration by model, fig.width=8}
+
+heatwave_duration <- climate_data %>%
+  filter(hazard == "heatwave_duration",
+         indicator == "expectedvalue")
 
 ggplot(heatwave_duration, aes(x = mean_estimate, y = city, color = scenario)) +
   geom_point(size = 5, alpha = 0.8) +  
@@ -576,9 +604,9 @@ Looking at the shift from **Recent Historical** to the **1.5C**, **2.0C**, and *
 
 -   **Milwaukee** will experience a considerable jump in heatwave length from **11.5** days in the **Recent Historical** scenario to **18.9** days under the **3.0C** scenario, adding over **7 days** to the longest heatwave of the year.
 
--   **Minneapolis**, traditionally a cooler city, will see an increase in heatwave duration from **10.7** days to **19.1** days, a striking rise of nearly 9 days, especially given its northern location.
+-   **Minneapolis**, traditionally a cooler city, will see an increase in heatwave duration from **10.7** days to **19.1** days, a striking rise of nearly 9 days, especially given its northern location.\
 
-# Tie back to news stories and human costs
+# Human Impact
 
 The human costs of climate change are expected to be profound and wide-reaching, impacting individuals on multiple fronts.
 
@@ -590,9 +618,6 @@ People will also face disruptions to daily life through higher energy costs, red
 
 Ultimately, the impacts of climate change will make everyday life more challenging, particularly for those who are already marginalized or economically vulnerable.
 
-*LINK TO NEXT PAGE OF CASE STUDIES*
-
-------------------------------------------------------------------------
+Continue here
 
 rmarkdown::render_site()
-

@@ -1,11 +1,15 @@
+body {
+  background-color: white;
+}
+
+a {
+  color: #CB4F27;
+}
+
 /* TABLE OF CONTENTS FORMATTING */
 #TOC {
   left: 30px;
-  width: 300px;
-  max-width: 90%;
-  overflow: auto;
-  color: #d95f0e;
-  border-radius: 3px;
+  color: #CB4F27;
 }
 
 .list-group-item.active,
@@ -13,7 +17,69 @@
 .list-group-item.active:hover {
   z-index: 2;
   color: white;
-  background-color: #d95f0e;
+  background-color: #CB4F27;
 }
 
+/* HEADERS TEXT FORMATTING */
+h1 {
+  font-family: "Oswald", sans-serif;
+  color: #983720;
+}
+
+h2 {
+  font-family: "Oswald", sans-serif;
+  color: #CB4F27;
+}
+
+h3 {
+  font-family: "Oswald", sans-serif;
+  color: #EB7124;
+}
+
+
+blockquote {
+  font-family: "Oswald", sans-serif;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 30px;
+  color: #983720;
+}
+
+
+.tabset-fade .tabset-pills
+
+/* TABSET TEXT FORMATTING */
+
+.nav-tabs > li > a {
+  color: #983720
+}
+
+.nav-tabs > li.active > a {
+  color: #EB7124
+}
+
+.nav-tabs > li.active > a:focus {
+  color: #EB7124;
+}
+
+.nav-tabs > li > a:hover {
+  color: #EB7124
+}
+
+.nav-tabs > li.active > a:hover {
+  color: #EB7124
+}
+
+/* TABLE FORMATTING */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 90%;
+}
+
+table th {
+  font-size: 16px;
+  font-weight: bolder;
+  text-transform: capitalize;
+}
 

@@ -1,0 +1,27 @@
+---
+title: "Source Information"
+
+output:
+  html_document:
+    css: theme.css
+    fig_width: 8.75
+    self_contained: false
+---
+
+## Main Dataset
+
+-   
+
+    ```         
+    [City-scale climate hazards at 1.5°C, 2.0°C, and 3.0°C of global warming](https://datasets.wri.org/datasets/city-scale-climate-hazard-indicators-warming-scenarios?map=eyJ2aWV3U3RhdGUiOnsibGF0aXR1ZGUiOjAsImxvbmdpdHVkZSI6MCwiem9vbSI6MywiYmVhcmluZyI6MCwicGl0Y2giOjAsInBhZGRpbmciOnsidG9wIjowLCJib3R0b20iOjAsImxlZnQiOjAsInJpZ2h0IjowfX0sImJhc2VtYXAiOiJsaWdodCIsImJvdW5kYXJpZXMiOmZhbHNlLCJsYWJlbHMiOiJkYXJrIiwiYWN0aXZlTGF5ZXJHcm91cHMiOltdLCJib3VuZHMiOnsiYmJveCI6bnVsbCwib3B0aW9ucyI6e319LCJsYXllcnNQYXJzZWQiOltdfQ%3D%3D), World Resources Institute
+    ```
+
+## Home Page
+
+-   <https://climatecommunication.yale.edu/visualizations-data/ycom-us/>
+
+## Case Studies
+
+-   <https://www.eea.europa.eu/en/topics/in-depth/climate-change-mitigation-reducing-emissions>
+
+-   

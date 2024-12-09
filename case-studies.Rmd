@@ -1,0 +1,19 @@
+---
+title: "Case Studies"
+
+output:
+  html_document:
+    css: theme.css
+    fig_width: 8.75
+    self_contained: false
+---
+
+# Mitigation vs Adaptation
+
+**Mitigation** aims to *reduce the causes of climate change* by lowering greenhouse gas emissions and enhancing carbon sinks. Examples of mitigation projects include transitioning to renewable energy, improving energy efficiency, and reforesting degraded land.
+
+**Adaptation** focuses on *managing the impacts of climate change* by increasing resilience to its effects and adjusting current living conditions to be better equipped for the climate in the future. This includes building flood defenses, developing drought-resistant crops, and improving urban infrastructure to handle extreme weather.
+
+# Mitigation Projects in the Midwest
+
+# Adaptation Projects in the Midwest

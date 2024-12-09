@@ -1,38 +1,22 @@
 ---
-title: "Dumping Ground"
+title: "To Dos"
+
+output:
+  html_document:
+    css: theme.css
+    fig_width: 8.75
+    self_contained: false
 ---
 
-# Kaitlyn to dos
 
-## R stuff
-
--   plotly - interactivity ?
-
--   ~~1995 - 2014 -\> "recent historical"~~
-
--   figure out spacing between sections? why is there no gap?
-
-## Research 
-
--   news stories for section
+## Research
 
 -   Case study table?
 
     -   “What if you were able to sort the projects by their category (adaptation, mitigation) but also by topic (transportation, food systems, etc). if you really wanted to get fancy - maybe you even sort by things like city type (small, medium, large) or by budget (high to low) or project lead (government, non profit, etc) to highlight the diverse means for change“
 
-## Writing 
 
--   better Midwest health impacts
 
-    -   <https://nca2014.globalchange.gov/report/regions/midwest>
-
-    -   <https://nca2023.globalchange.gov/chapter/24/>
-
-    -   <https://climatechange.chicago.gov/climate-impacts/climate-impacts-midwest#Reference%201>
-
-```{=html}
-<!-- -->
-```
 -   Case Study section
 
     -   **mitigation** vs **adaptation**
@@ -46,19 +30,3 @@ title: "Dumping Ground"
         -   how are their actions intended to help mitigate or adapt to their challenges
 
         -   what is the outcome/result (so far)?
-
-## Design
-
--   make calendar chart thing for increased heat visual
-
-```{=html}
-<!-- -->
-```
--   theme css across document
-
-    -   fonts and branding
-
-```{=html}
-<!-- -->
-```
--   create graphics

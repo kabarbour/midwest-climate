@@ -5,7 +5,12 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+
+    - text: "Case Studies"
+      href: case-studies.html
+      
     - text: "Source"
-      href: about.html
+      href: source.html
+      
     - text: "Dumping Ground"
       href: test.html
