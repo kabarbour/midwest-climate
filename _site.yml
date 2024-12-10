@@ -8,9 +8,4 @@ navbar:
 
     - text: "Case Studies"
       href: case-studies.html
-      
-    - text: "Source"
-      href: source.html
-      
-    - text: "Dumping Ground"
-      href: test.html
+  

@@ -29,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -217,7 +221,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -227,6 +297,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -249,12 +329,6 @@ $(document).ready(function () {
 <li>
   <a href="case-studies.html">Case Studies</a>
 </li>
-<li>
-  <a href="source.html">Source</a>
-</li>
-<li>
-  <a href="test.html">Dumping Ground</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -264,6 +338,14 @@ $(document).ready(function () {
 </div><!--/.navbar -->
 
 <div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -285,16 +367,138 @@ adjusting current living conditions to be better equipped for the
 climate in the future. This includes building flood defenses, developing
 drought-resistant crops, and improving urban infrastructure to handle
 extreme weather.</p>
+<p><img src="images/mitigation_adaptation.png" /></p>
 </div>
-<div id="mitigation-projects-in-the-midwest" class="section level2">
-<h2>Mitigation Projects in the Midwest</h2>
+<div id="mitigation-strategies" class="section level2">
+<h2>Mitigation Strategies</h2>
+<p>Cities across the Midwest are stepping up their climate action with
+ambitious projects and policies aimed at reducing greenhouse gas
+emissions and embracing renewable energy.</p>
+<ul>
+<li><p><a
+href="https://www.cityofmadison.com/sustainability/climate/sustainability-plan">Madison,
+Wisconsin</a>, for example, supports local wind energy production, with
+approximately 10,000 residential customers already on green energy, as
+part of its goal to achieve 100% renewable energy for municipal
+electricity.</p></li>
+<li><p><a
+href="https://smartcolumbus.com/playbook-assets/electric-vehicle-fleet-adoption/making-it-simple-for-columbus-region-municipalities-to-electrify-their-fleets">Columbus,
+Ohio</a>, has become a national leader in transitioning municipal fleets
+to electric vehicles, with nearly 100 EVs in use and plans to add 200
+more, alongside anti-idling technology to cut emissions.</p></li>
+<li><p><a
+href="https://www.grandrapidsmi.gov/Government/Departments/Sustainability">Grand
+Rapids, Michigan</a>, is developing a roadmap to achieve a zero net
+carbon building sector by 2050, joining Michigan’s Battle of the
+Buildings initiative to enhance energy efficiency across commercial,
+industrial, and multi-family buildings.</p></li>
+<li><p><a
+href="https://www.a2gov.org/departments/sustainability/documents/a2zero%20climate%20action%20plan%20_3.0.pdf">Ann
+Arbor, Michigan</a>, plans to reduce greenhouse gas emissions by 25% by
+2025 and 90% by 2050, offering low-interest funding for property owners
+and renters to assess and upgrade building efficiency.</p></li>
+<li><p>In June 2024, the <a
+href="https://www.house.mn.gov/members/Profile/News/15513/39463">Minnesota
+House of Representatives</a> passed a 2024 Climate and Energy Bill,
+which allocates $14.2 million for renewable energy projects, $1 million
+for geothermal and solar, and streamlines permitting to support the
+state’s 100% clean energy goal by 2040.</p></li>
+<li><p><a
+href="https://insights.cincinnati-oh.gov/stories/s/Emissions-Greenhouse-Gases/d49x-hx36/">Cincinnati,
+Ohio</a>, has already saved roughly 150,000 metric tons of CO2 through
+municipal building efficiency improvements and has created the <a
+href="https://app.climateview.global/v3/public/board/eaf363ce-0ad5-4d27-b686-4ee5ea070149">Green
+Cincinnati Plan</a>, a “comprehensive set of 40 high-impact Strategies
+and 128 Actions to address climate change and build a more sustainable,
+equitable, and resilient future.”</p></li>
+</ul>
+<p>Beyond local efforts, the Midwest states of Minnesota, Illinois, and
+Michigan have passed laws to expedite renewable energy projects,
+addressing a significant backlog of solar, wind, and battery projects
+awaiting grid connection. Michigan’s <a
+href="https://graham.umich.edu/project/MI-energy-siting">2023
+legislation</a> streamlined the approval process for large renewable
+energy projects by centralizing authority at the state level, while <a
+href="https://mn.gov/governor/newsroom/press-releases/?id=1055-630240#:~:text=Reforms%20are%20estimated%20to%20result,percent%20clean%20electricity%20by%202040.">Minnesota’s
+reforms</a> are expected to reduce permitting times by up to nine
+months, helping bring clean energy online faster. Together, these
+efforts highlight the region’s commitment to advancing climate solutions
+and renewable energy innovation.</p>
 </div>
-<div id="adaptation-projects-in-the-midwest" class="section level2">
-<h2>Adaptation Projects in the Midwest</h2>
+<div id="adaptation-strategies" class="section level2">
+<h2>Adaptation Strategies</h2>
+<ul>
+<li><p><a
+href="https://fundingtoaction.edf.org/?casestudy=midwest-climate-hub">Midwest
+Climate Hub</a>: The Midwest Climate Hub helps agricultural communities
+across eight states adapt to climate change by providing region-specific
+climate data, conducting research, and developing adaptive technologies.
+The Hub collaborates with local partners to ensure that climate
+information reaches farmers and is applied effectively.</p></li>
+<li><p><a href="https://www.spacetogrowchicago.org/">Space to Grow
+(Chicago)</a>: The Space to Grow initiative transforms school parking
+lots in low-income neighborhoods into green infrastructure that captures
+stormwater and reduces flooding risks. These spaces also serve as
+educational and community gathering areas, promoting social engagement,
+physical activity, and environmental education while benefiting the
+community.</p></li>
+<li><p><a href="Evanston&#39;s%20climate%20plan">Evanston, Illinois
+Climate Plan</a>: Evanston’s climate action plan focuses on helping
+vulnerable communities, such as low-income populations and communities
+of color, adapt to climate change. The city offers energy efficiency
+upgrades, develops funding programs, and works with residents to reduce
+financial impacts and promote environmental justice.</p></li>
+<li><p><a href="https://mwcasc.umn.edu/our-approach">Midwest Climate
+Adaptation Science Center</a>: The Midwest Climate Adaptation Science
+Center conducts research to provide science-based solutions for adapting
+to climate change. It supports fish, wildlife, water, land, and
+communities in the Midwest by offering localized information and
+decision-making tools.</p></li>
+<li><p><a href="https://www.thriveindianapolis.com/">Thrive
+Indianapolis:</a> Thrive Indianapolis is a sustainability plan that
+targets climate change impacts on low-income and marginalized
+communities. The plan includes eliminating barriers to energy efficiency
+programs and offering financing for home energy upgrades, ensuring that
+vulnerable populations can reduce their energy costs while improving
+resilience.</p></li>
+<li><p><a href="https://arc.net/l/quote/ykxkuldn">Edina, Minnesota
+Energy Action Plan</a>: Edina’s Energy Action Plan emphasizes energy
+efficiency with strong monitoring and reporting. The city tracks
+progress through bi-weekly meetings with stakeholders, ensuring
+transparency and flexibility to adjust strategies if needed, and focuses
+on residential and commercial energy efficiency improvements.</p></li>
+<li><p><a
+href="https://www.chicago.gov/city/en/progs/env/sustainable_chicago2015.html">Sustainable
+Chicago</a>: Chicago’s climate resilience efforts include expanding
+green infrastructure, modernizing the sewer system, and increasing urban
+parks to reduce flooding and heat risks. The city also operates cooling
+centers during heatwaves and promotes transportation equity through its
+Divvy bike-share program.</p></li>
+<li><p><a
+href="https://www.stpaul.gov/departments/mayors-office/climate-action-planning">St. Paul
+Climate Action</a>: St. Paul’s climate action plan engages vulnerable
+communities in developing strategies for resilience. The city emphasizes
+social engagement, with initiatives like urban gardening, sustainable
+transportation, and climate education to help communities adapt to
+climate change and promote equity. The Community Climate Change
+Conversations project focuses on grassroots resilience
+building.</p></li>
+</ul>
+<p><img src="images/prep.png" /></p>
+<p>While the challenges posed by climate change are significant, there
+are many dedicated individuals, organizations, and communities already
+working to adapt and build resilience. <strong>Through collaborative
+efforts, strategic planning, and focused action, we can create more
+robust, sustainable, and protected communities for the future</strong>,
+and by learning from current initiatives and continuously improving our
+approaches, we can better equip vulnerable populations and foster
+long-term climate resilience.</p>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -326,7 +530,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

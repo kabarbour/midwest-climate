@@ -20,4 +20,6 @@ output:
 
 -   <https://www.eea.europa.eu/en/topics/in-depth/climate-change-mitigation-reducing-emissions>
 
--   
+-   <https://insideclimatenews.org/news/17062024/midwest-renewable-energy-project-delays-power-grid/>
+
+-   <https://elpc.org/projects/midwest-cities-states-drive-climate-solutions/>
