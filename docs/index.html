@@ -451,12 +451,12 @@ Center Point Years from WRI Data
 and predict that we will pass the second threshold (2.0ºC) by 2024. The
 final threshold listed (3.0ºC) lists a variety of years, with a range of
 years between as soon as 2028 and as late as 2086 for other models.</p>
-<div id="º-of-warming" class="section level2 tabset">
-<h2 class="tabset">35º of warming</h2>
+<div id="ºc-threshold" class="section level2 tabset">
+<h2 class="tabset">35ºC Threshold</h2>
 <p>An important indicator to consider is the threshold of 35°C
 (95°F).</p>
 <p>The metric <code>Tmax35_days</code> represents the annual count of
-days with maximum temperatures reaching or exceeding 35°C. This
+days with maximum temperatures reaching or exceeding 35°C, or 95°F. This
 temperature threshold is widely regarded as a critical limit for human
 tolerance, as prolonged exposure to humid conditions at or above 35°C
 can be life-threatening.</p>
@@ -468,7 +468,7 @@ potential impacts on cities in the Midwest.</p>
   filter(hazard == &quot;Tmax35_days&quot;, indicator == &quot;expectedvalue&quot;)
 
 chart1_35_data_hist &lt;- chart1_35_data %&gt;%
-  filter(scenario == &quot;Recent Historical&quot;)
+  filter(scenario == &quot;Historical&quot;)
 chart1_35_data_1 &lt;- chart1_35_data %&gt;%
   filter(scenario == &quot;1.5C&quot;)
 chart1_35_data_2&lt;- chart1_35_data %&gt;%
@@ -491,7 +491,7 @@ midwest_bounds &lt;- list(
 ggplot() +
   # Add state boundaries
   geom_polygon(data = states_map, aes(x = long, y = lat, group = group), 
-               fill = &quot;gray85&quot;, color = &quot;white&quot;, size = 0.2) +
+               fill = &quot;gray80&quot;, color = &quot;white&quot;, size = 0.2) +
   # Add city bubbles
   geom_point(data = chart1_35_data_hist, 
              aes(x = longitude, y = latitude, size = mean_estimate, 
@@ -683,9 +683,9 @@ pivoted_temp_days &lt;- average_temp_days %&gt;%
 # Calculate the increase relative to &quot;recent historical&quot;
 pivoted_temp_days &lt;- pivoted_temp_days %&gt;%
   mutate(
-    `1.5C Increase` = `1.5C` - `Recent Historical`,
-    `2.0C Increase` = `2.0C` - `Recent Historical`,
-    `3.0C Increase` = `3.0C` - `Recent Historical`
+    `1.5C Increase` = `1.5C` - `Historical`,
+    `2.0C Increase` = `2.0C` - `Historical`,
+    `3.0C Increase` = `3.0C` - `Historical`
   )
 
 # Round data 
@@ -695,20 +695,13 @@ pivoted_temp_days &lt;- pivoted_temp_days %&gt;%
 
 knitr::kable(
   pivoted_temp_days %&gt;% 
-    select(city, `Recent Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
+    select(city, `Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
 )</code></pre>
 <table>
-<colgroup>
-<col width="17%" />
-<col width="24%" />
-<col width="19%" />
-<col width="19%" />
-<col width="19%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th align="left">city</th>
-<th align="right">Recent Historical</th>
+<th align="right">Historical</th>
 <th align="right">1.5C Increase</th>
 <th align="right">2.0C Increase</th>
 <th align="right">3.0C Increase</th>
@@ -832,9 +825,9 @@ pivoted_95temp_days &lt;- average_95temp_days %&gt;%
 # Calculate the increase relative to &quot;recent historical&quot;
 pivoted_95temp_days &lt;- pivoted_95temp_days %&gt;%
   mutate(
-    `1.5C Increase` = `1.5C` - `Recent Historical`,
-    `2.0C Increase` = `2.0C` - `Recent Historical`,
-    `3.0C Increase` = `3.0C` - `Recent Historical`
+    `1.5C Increase` = `1.5C` - `Historical`,
+    `2.0C Increase` = `2.0C` - `Historical`,
+    `3.0C Increase` = `3.0C` - `Historical`
   )
 
 # Round data 
@@ -844,20 +837,13 @@ pivoted_95temp_days &lt;- pivoted_95temp_days %&gt;%
 
 knitr::kable(
   pivoted_95temp_days %&gt;% 
-    select(city, `Recent Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
+    select(city, `Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
 )</code></pre>
 <table>
-<colgroup>
-<col width="17%" />
-<col width="24%" />
-<col width="19%" />
-<col width="19%" />
-<col width="19%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th align="left">city</th>
-<th align="right">Recent Historical</th>
+<th align="right">Historical</th>
 <th align="right">1.5C Increase</th>
 <th align="right">2.0C Increase</th>
 <th align="right">3.0C Increase</th>
@@ -1017,18 +1003,16 @@ weeks of much warmer temperature appears pretty extreme.</p>
 were at or above the 95th percentile for heat (about 87ºF) and place it
 on a calendar. Next to it is what summers could look like at the
 estimated rate of warming.</p>
-<div class="figure" style="text-align: center">
-<img src="images/2024.png" alt="Days above 95th Percentile, 2024 &amp; Potential 2029" width="49%" height="20%" /><img src="images/2029.png" alt="Days above 95th Percentile, 2024 &amp; Potential 2029" width="49%" height="20%" />
-<p class="caption">
-Days above 95th Percentile, 2024 &amp; Potential 2029
-</p>
-</div>
-<p>If warming continues at the predicted rates, some months could have
+<p><em>Days above 95th Percentile, 2024</em> <img
+src="images/2024.png" /></p>
+<p><em>Days above 95th Percentile, Potential 2029</em> <img
+src="images/2029.png" /></p>
+<p>If warming continues at the predicted rates, some months could see
 nearly more days above 87º than not.</p>
 </div>
 </div>
-<div id="increasing-heatwaves" class="section level1">
-<h1>Increasing Heatwaves</h1>
+<div id="increasing-heatwaves" class="section level1 tabset">
+<h1 class="tabset">Increasing Heatwaves</h1>
 <p>It is also crucial to consider heatwaves in addition to overall
 warmer temperatures when assessing climate change impacts.
 Heatwaves—defined as periods of abnormally hot weather—are typically
@@ -1052,33 +1036,23 @@ average_heatwave_count &lt;- heatwave_count %&gt;%
   group_by(scenario) %&gt;%
   summarize(avg_heatwave_count = mean(mean_estimate, na.rm = TRUE), .groups = &quot;drop&quot;) 
 
-knitr::kable(average_heatwave_count)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left">scenario</th>
-<th align="right">avg_heatwave_count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Recent Historical</td>
-<td align="right">6.416499</td>
-</tr>
-<tr class="even">
-<td align="left">1.5C</td>
-<td align="right">6.419609</td>
-</tr>
-<tr class="odd">
-<td align="left">2.0C</td>
-<td align="right">6.811178</td>
-</tr>
-<tr class="even">
-<td align="left">3.0C</td>
-<td align="right">7.506017</td>
-</tr>
-</tbody>
-</table>
+ggplot(average_heatwave_count, aes(x = scenario, y = avg_heatwave_count, color = scenario)) +
+  geom_point(size = 4) +                     # Add points
+  scale_y_continuous(limits = c(5, 9)) + 
+  geom_text(aes(label = round(avg_heatwave_count, 2)), # Add labels with rounded values
+            vjust = -1, size = 4) +          # Position labels above points
+  theme_minimal() +                          # Minimal theme for clean aesthetics
+  labs(
+    title = &quot;Average Heatwave Count by Warming Scenario&quot;,
+    x = &quot;Scenario&quot;,
+    y = &quot;Average Heatwave Count&quot;,
+    color = &quot;Scenario&quot;
+  ) +
+  theme(
+    legend.position = &quot;none&quot;
+  ) +
+  scale_color_manual(values = c(&quot;#FEB24CFF&quot;, &quot;#FD8D3CFF&quot;, &quot;#E31A1CFF&quot;, &quot;#800026FF&quot;))</code></pre>
+<p><img src="index_files/figure-html/table%20-%20count%20heatwave%20per%20warming%20scenario-1.png" width="480" /></p>
 <p>The Midwest can expect an increase in the frequency of heatwaves,
 with the average number of heatwaves per year rising from 6.4 in the
 <code>Recent Historical</code> scenario to 7.5 in the worst case
@@ -1088,22 +1062,32 @@ these events can have, especially on vulnerable populations. Even a
 single heatwave can have severe consequences, including heat-related
 illnesses, strain on healthcare systems, power grids, and overall
 community resilience.</p>
-<pre class="r"><code>ggplot(heatwave_count, aes(x = mean_estimate, y = city, color = scenario)) +
-  geom_point(size = 5, alpha = 0.8) +  
+<div id="models" class="section level2">
+<h2>Models</h2>
+<pre class="r"><code>heatwave_count$scenario &lt;- factor(heatwave_count$scenario, levels = rev(levels(factor(heatwave_count$scenario))))
+
+ggplot(heatwave_count, aes(x = mean_estimate, y = scenario, color = model)) +
+  geom_point(size = 4, alpha = 0.8) +  
   scale_x_continuous(limits = c(3, 10)) + 
-  scale_y_discrete(limits=rev) +
+  facet_wrap(~ city, ncol = 2, scales = &quot;free_y&quot;) +  # Split into 2 columns
   theme_minimal() +
   theme(
-    strip.text.y = element_text(angle = 0),  
-    axis.title.y = element_blank()  
+    strip.text = element_text(size = 10),  # Adjust facet label size
+    legend.position = &quot;bottom&quot;,           # Move legend to the bottom
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title.y = element_blank()        # Remove y-axis label
   ) +
   labs(
-    title = &quot;Heatwave Count by City and Scenario&quot;,
-    x = &quot;Mean Heatwave Count&quot;,
-    color = &quot;Scenario&quot;
+    title = &quot;Heatwave Count by Model and Scenario&quot;,
+    color = &quot;Model&quot;, 
+    x = &quot;Yearly Heatwave Count&quot;,
   ) +
-  scale_color_brewer(palette = &quot;YlOrBr&quot;) </code></pre>
+    scale_color_manual(values = c(&quot;#FED976FF&quot;, &quot;#FEB24CFF&quot;, &quot;#FD8D3CFF&quot;, &quot;#FC4E2AFF&quot;, &quot;#E31A1CFF&quot;, &quot;#BD0026FF&quot;, &quot;#800026FF&quot;))</code></pre>
 <p><img src="index_files/figure-html/chart%20-%20heatwave%20count%20by%20city%20and%20scenario-1.png" width="768" /></p>
+</div>
+<div id="table" class="section level2">
+<h2>Table</h2>
 <pre class="r"><code># FIND THE AVERAGE NUMBER OF HEATWAVES PER WARMING SCENARIO PER CITY
 average_heatwave_city &lt;- heatwave_count %&gt;%
   group_by(city,scenario) %&gt;%
@@ -1121,92 +1105,95 @@ knitr::kable(average_heatwave_city)</code></pre>
 <thead>
 <tr class="header">
 <th align="left">city</th>
-<th align="right">Recent Historical</th>
-<th align="right">1.5C</th>
-<th align="right">2.0C</th>
 <th align="right">3.0C</th>
+<th align="right">2.0C</th>
+<th align="right">1.5C</th>
+<th align="right">Historical</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Chicago</td>
-<td align="right">6.9</td>
-<td align="right">7.0</td>
-<td align="right">8.0</td>
 <td align="right">7.8</td>
+<td align="right">8.0</td>
+<td align="right">7.0</td>
+<td align="right">6.9</td>
 </tr>
 <tr class="even">
 <td align="left">Cincinnati</td>
-<td align="right">6.3</td>
-<td align="right">5.7</td>
-<td align="right">6.6</td>
 <td align="right">8.0</td>
+<td align="right">6.6</td>
+<td align="right">5.7</td>
+<td align="right">6.3</td>
 </tr>
 <tr class="odd">
 <td align="left">Cleveland</td>
+<td align="right">7.6</td>
 <td align="right">6.5</td>
 <td align="right">6.2</td>
 <td align="right">6.5</td>
-<td align="right">7.6</td>
 </tr>
 <tr class="even">
 <td align="left">Columbus</td>
-<td align="right">6.8</td>
-<td align="right">6.4</td>
-<td align="right">6.4</td>
 <td align="right">7.9</td>
+<td align="right">6.4</td>
+<td align="right">6.4</td>
+<td align="right">6.8</td>
 </tr>
 <tr class="odd">
 <td align="left">Detroit</td>
-<td align="right">6.7</td>
-<td align="right">6.8</td>
-<td align="right">7.3</td>
 <td align="right">7.7</td>
+<td align="right">7.3</td>
+<td align="right">6.8</td>
+<td align="right">6.7</td>
 </tr>
 <tr class="even">
 <td align="left">Indianapolis</td>
+<td align="right">7.3</td>
 <td align="right">7.2</td>
 <td align="right">6.9</td>
 <td align="right">7.2</td>
-<td align="right">7.3</td>
 </tr>
 <tr class="odd">
 <td align="left">Kansas City</td>
-<td align="right">5.1</td>
+<td align="right">6.7</td>
+<td align="right">6.7</td>
 <td align="right">5.9</td>
-<td align="right">6.7</td>
-<td align="right">6.7</td>
+<td align="right">5.1</td>
 </tr>
 <tr class="even">
 <td align="left">Louisville</td>
-<td align="right">6.5</td>
-<td align="right">5.9</td>
-<td align="right">6.0</td>
 <td align="right">7.4</td>
+<td align="right">6.0</td>
+<td align="right">5.9</td>
+<td align="right">6.5</td>
 </tr>
 <tr class="odd">
 <td align="left">Milwaukee</td>
-<td align="right">6.3</td>
-<td align="right">6.3</td>
-<td align="right">6.3</td>
 <td align="right">7.1</td>
+<td align="right">6.3</td>
+<td align="right">6.3</td>
+<td align="right">6.3</td>
 </tr>
 <tr class="even">
 <td align="left">Minneapolis</td>
-<td align="right">6.2</td>
-<td align="right">6.6</td>
-<td align="right">7.0</td>
 <td align="right">7.5</td>
+<td align="right">7.0</td>
+<td align="right">6.6</td>
+<td align="right">6.2</td>
 </tr>
 <tr class="odd">
 <td align="left">Omaha</td>
-<td align="right">6.3</td>
-<td align="right">6.7</td>
-<td align="right">7.0</td>
 <td align="right">7.5</td>
+<td align="right">7.0</td>
+<td align="right">6.7</td>
+<td align="right">6.3</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="section-1" class="section level2 unlisted unnumbered">
+<h2 class="unlisted unnumbered"></h2>
 <p>Cities across the Midwest are projected to experience varying shifts
 in heatwave frequency. For example, <strong>Chicago</strong> may see a
 slight increase, from 6.9 in the Recent Historical scenario to 7.8 in
@@ -1219,8 +1206,9 @@ for elderly, low-income, and other vulnerable groups who may struggle to
 cope with extended periods of extreme heat. This emphasizes the need for
 proactive heatwave preparedness and climate adaptation strategies.</p>
 </div>
-<div id="heatwave-duration" class="section level1">
-<h1>Heatwave Duration</h1>
+</div>
+<div id="heatwave-duration" class="section level1 tabset">
+<h1 class="tabset">Heatwave Duration</h1>
 <p>Not only will there be more heatwaves, but they are also likely to be
 <strong>longer</strong>. The length of heatwaves is a critical factor to
 consider, as prolonged periods of extreme heat can have even greater
@@ -1234,24 +1222,32 @@ heatwaves is expected to increase, meaning that communities may face
 extended periods of extreme heat, which can overwhelm cooling systems,
 increase the risk of heat-related illnesses, and put additional strain
 on energy resources.</p>
+<div id="model" class="section level2">
+<h2>Model</h2>
 <pre class="r"><code>heatwave_duration &lt;- climate_data %&gt;%
   filter(hazard == &quot;heatwave_duration&quot;,
          indicator == &quot;expectedvalue&quot;)
 
-ggplot(heatwave_duration, aes(x = mean_estimate, y = city, color = scenario)) +
-  geom_point(size = 5, alpha = 0.8) +  
+heatwave_duration$scenario &lt;- factor(heatwave_duration$scenario, levels = rev(levels(factor(heatwave_duration$scenario))))
+
+ggplot(heatwave_duration, aes(x = mean_estimate, y = scenario, color = model)) +
+  geom_point(size = 4, alpha = 0.8) +  
   scale_x_continuous(limits = c(0, 24)) + 
+  facet_wrap(~ city, ncol = 2, scales = &quot;free_y&quot;) +  # Split into 2 columns
   theme_minimal() +
   theme(
-    strip.text.y = element_text(angle = 0),  
-    axis.title.y = element_blank()  
+    strip.text = element_text(size = 10),  # Adjust facet label size
+    legend.position = &quot;bottom&quot;,           # Move legend to the bottom
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title.y = element_blank()        # Remove y-axis label
   ) +
   labs(
     title = &quot;Heatwave Duration by Model and Scenario&quot;,
     x = &quot;Longest Heatwave Duration&quot;,
-    color = &quot;Scenario&quot;
-  ) +
-  scale_color_brewer(palette = &quot;YlOrBr&quot;) </code></pre>
+    color = &quot;Model&quot;
+  )  +
+    scale_color_manual(values = c(&quot;#FED976FF&quot;, &quot;#FEB24CFF&quot;, &quot;#FD8D3CFF&quot;, &quot;#FC4E2AFF&quot;, &quot;#E31A1CFF&quot;, &quot;#BD0026FF&quot;, &quot;#800026FF&quot;))</code></pre>
 <p><img src="index_files/figure-html/heatwave%20duration%20by%20model-1.png" width="768" /></p>
 <p>This shows the average duration (in days) of the longest heatwave per
 year under different warming scenarios. This indicates that with higher
@@ -1277,6 +1273,9 @@ weeks</strong>. In the <strong>3.0C</strong> scenario, cities like
 experience heatwaves that last well beyond <strong>three weeks</strong>,
 adding even more strain on infrastructure and increasing risks for
 vulnerable populations.</p>
+</div>
+<div id="table-1" class="section level2">
+<h2>Table</h2>
 <pre class="r"><code># FIND AVERAGE LENGTH OF LONGEST HEATWAVE PER CITY PER SCENARIO
 average_duration_city &lt;- heatwave_duration %&gt;%
   group_by(city,scenario) %&gt;%
@@ -1294,92 +1293,95 @@ knitr::kable(average_duration_city)</code></pre>
 <thead>
 <tr class="header">
 <th align="left">city</th>
-<th align="right">Recent Historical</th>
-<th align="right">1.5C</th>
-<th align="right">2.0C</th>
 <th align="right">3.0C</th>
+<th align="right">2.0C</th>
+<th align="right">1.5C</th>
+<th align="right">Historical</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Chicago</td>
+<td align="right">19.6</td>
 <td align="right">13.0</td>
 <td align="right">12.8</td>
 <td align="right">13.0</td>
-<td align="right">19.6</td>
 </tr>
 <tr class="even">
 <td align="left">Cincinnati</td>
-<td align="right">10.9</td>
-<td align="right">9.9</td>
-<td align="right">11.2</td>
 <td align="right">15.8</td>
+<td align="right">11.2</td>
+<td align="right">9.9</td>
+<td align="right">10.9</td>
 </tr>
 <tr class="odd">
 <td align="left">Cleveland</td>
-<td align="right">9.3</td>
-<td align="right">10.5</td>
-<td align="right">10.1</td>
 <td align="right">14.8</td>
+<td align="right">10.1</td>
+<td align="right">10.5</td>
+<td align="right">9.3</td>
 </tr>
 <tr class="even">
 <td align="left">Columbus</td>
-<td align="right">10.3</td>
-<td align="right">11.0</td>
-<td align="right">12.7</td>
 <td align="right">15.4</td>
+<td align="right">12.7</td>
+<td align="right">11.0</td>
+<td align="right">10.3</td>
 </tr>
 <tr class="odd">
 <td align="left">Detroit</td>
-<td align="right">10.6</td>
-<td align="right">11.7</td>
-<td align="right">11.4</td>
 <td align="right">15.6</td>
+<td align="right">11.4</td>
+<td align="right">11.7</td>
+<td align="right">10.6</td>
 </tr>
 <tr class="even">
 <td align="left">Indianapolis</td>
-<td align="right">11.9</td>
-<td align="right">11.7</td>
-<td align="right">12.8</td>
 <td align="right">18.1</td>
+<td align="right">12.8</td>
+<td align="right">11.7</td>
+<td align="right">11.9</td>
 </tr>
 <tr class="odd">
 <td align="left">Kansas City</td>
-<td align="right">13.8</td>
-<td align="right">14.8</td>
-<td align="right">15.3</td>
 <td align="right">18.0</td>
+<td align="right">15.3</td>
+<td align="right">14.8</td>
+<td align="right">13.8</td>
 </tr>
 <tr class="even">
 <td align="left">Louisville</td>
-<td align="right">11.9</td>
-<td align="right">10.4</td>
-<td align="right">9.4</td>
 <td align="right">13.1</td>
+<td align="right">9.4</td>
+<td align="right">10.4</td>
+<td align="right">11.9</td>
 </tr>
 <tr class="odd">
 <td align="left">Milwaukee</td>
-<td align="right">11.5</td>
-<td align="right">12.1</td>
-<td align="right">12.5</td>
 <td align="right">18.9</td>
+<td align="right">12.5</td>
+<td align="right">12.1</td>
+<td align="right">11.5</td>
 </tr>
 <tr class="even">
 <td align="left">Minneapolis</td>
-<td align="right">10.7</td>
-<td align="right">11.7</td>
-<td align="right">14.3</td>
 <td align="right">19.1</td>
+<td align="right">14.3</td>
+<td align="right">11.7</td>
+<td align="right">10.7</td>
 </tr>
 <tr class="odd">
 <td align="left">Omaha</td>
-<td align="right">14.7</td>
-<td align="right">13.9</td>
-<td align="right">13.3</td>
 <td align="right">14.8</td>
+<td align="right">13.3</td>
+<td align="right">13.9</td>
+<td align="right">14.7</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="section-2" class="section level2 unlisted unnumbered">
+<h2 class="unlisted unnumbered"></h2>
 <p>Looking at the shift from <strong>Recent Historical</strong> to the
 <strong>1.5C</strong>, <strong>2.0C</strong>, and <strong>3.0C</strong>
 scenarios, we see that all cities are expected to experience an increase
@@ -1408,6 +1410,7 @@ given its northern location.<br />
 </p></li>
 </ul>
 </div>
+</div>
 <div id="human-impact" class="section level1">
 <h1>Human Impact</h1>
 <p>The human costs of climate change are expected to be profound and
@@ -1428,7 +1431,9 @@ it harder for communities to adapt and thrive.</p>
 <p>Ultimately, the impacts of climate change will make everyday life
 more challenging, particularly for those who are already marginalized or
 economically vulnerable.</p>
-<p>Continue here</p>
+<p><a
+href="https://kabarbour.github.io/midwest-climate/case-studies.htmlhttps://kabarbour.github.io/midwest-climate/case-studies.html">Continue
+here</a></p>
 <p>rmarkdown::render_site()</p>
 </div>
 

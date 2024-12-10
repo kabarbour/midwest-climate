@@ -12,6 +12,7 @@ output:
     css: theme.css
     fig_width: 8.75
     self_contained: false
+    fig_caption: true
 ---
 
 <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
@@ -71,7 +72,7 @@ climate_data$scenario <- factor(
   levels = c("1995 - 2014", "1.5C", "2.0C", "3.0C")
 )
 
-levels(climate_data$scenario)[levels(climate_data$scenario) == "1995 - 2014"] <- "Recent Historical"
+levels(climate_data$scenario)[levels(climate_data$scenario) == "1995 - 2014"] <- "Historical"
 
 ```
 
@@ -105,11 +106,11 @@ knitr::include_graphics(c("images/centerpoint_2.png", "images/centerpoint.png"))
 
 Some models already have us as passing the first threshold (1.5ºC) and predict that we will pass the second threshold (2.0ºC) by 2024. The final threshold listed (3.0ºC) lists a variety of years, with a range of years between as soon as 2028 and as late as 2086 for other models.
 
-## 35º of warming {.tabset}
+## 35ºC Threshold {.tabset}
 
 An important indicator to consider is the threshold of 35°C (95°F).
 
-The metric `Tmax35_days` represents the annual count of days with maximum temperatures reaching or exceeding 35°C. This temperature threshold is widely regarded as a critical limit for human tolerance, as prolonged exposure to humid conditions at or above 35°C can be life-threatening.
+The metric `Tmax35_days` represents the annual count of days with maximum temperatures reaching or exceeding 35°C, or 95°F. This temperature threshold is widely regarded as a critical limit for human tolerance, as prolonged exposure to humid conditions at or above 35°C can be life-threatening.
 
 By comparing different warming scenarios, we can evaluate the potential impacts on cities in the Midwest.
 
@@ -121,7 +122,7 @@ chart1_35_data <- climate_data %>%
   filter(hazard == "Tmax35_days", indicator == "expectedvalue")
 
 chart1_35_data_hist <- chart1_35_data %>%
-  filter(scenario == "Recent Historical")
+  filter(scenario == "Historical")
 chart1_35_data_1 <- chart1_35_data %>%
   filter(scenario == "1.5C")
 chart1_35_data_2<- chart1_35_data %>%
@@ -144,7 +145,7 @@ midwest_bounds <- list(
 ggplot() +
   # Add state boundaries
   geom_polygon(data = states_map, aes(x = long, y = lat, group = group), 
-               fill = "gray85", color = "white", size = 0.2) +
+               fill = "gray80", color = "white", size = 0.2) +
   # Add city bubbles
   geom_point(data = chart1_35_data_hist, 
              aes(x = longitude, y = latitude, size = mean_estimate, 
@@ -343,9 +344,9 @@ pivoted_temp_days <- average_temp_days %>%
 # Calculate the increase relative to "recent historical"
 pivoted_temp_days <- pivoted_temp_days %>%
   mutate(
-    `1.5C Increase` = `1.5C` - `Recent Historical`,
-    `2.0C Increase` = `2.0C` - `Recent Historical`,
-    `3.0C Increase` = `3.0C` - `Recent Historical`
+    `1.5C Increase` = `1.5C` - `Historical`,
+    `2.0C Increase` = `2.0C` - `Historical`,
+    `3.0C Increase` = `3.0C` - `Historical`
   )
 
 # Round data 
@@ -355,7 +356,7 @@ pivoted_temp_days <- pivoted_temp_days %>%
 
 knitr::kable(
   pivoted_temp_days %>% 
-    select(city, `Recent Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
+    select(city, `Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
 )
 ```
 
@@ -389,9 +390,9 @@ pivoted_95temp_days <- average_95temp_days %>%
 # Calculate the increase relative to "recent historical"
 pivoted_95temp_days <- pivoted_95temp_days %>%
   mutate(
-    `1.5C Increase` = `1.5C` - `Recent Historical`,
-    `2.0C Increase` = `2.0C` - `Recent Historical`,
-    `3.0C Increase` = `3.0C` - `Recent Historical`
+    `1.5C Increase` = `1.5C` - `Historical`,
+    `2.0C Increase` = `2.0C` - `Historical`,
+    `3.0C Increase` = `3.0C` - `Historical`
   )
 
 # Round data 
@@ -401,13 +402,13 @@ pivoted_95temp_days <- pivoted_95temp_days %>%
 
 knitr::kable(
   pivoted_95temp_days %>% 
-    select(city, `Recent Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
+    select(city, `Historical`, `1.5C Increase`, `2.0C Increase`, `3.0C Increase`)
 )
 ```
 
 This table highlights the significant increases in the number of extreme heat days per city, with some locations experiencing **nearly two additional weeks of days exceeding the local 95th percentile** at the most extreme warming scenarios.
 
-```{r chart - 95 pctile increase by scenario, fig.width=12}
+```{r chart - 95 pctile increase by scenario, fig.width=12, fig.height=6}
 
 bubble_data <- pivoted_95temp_days %>%
   left_join(chart2_95_data %>% select(city, latitude, longitude) %>% distinct(), by = "city") %>%
@@ -472,21 +473,19 @@ If we were to draw this out on a calendar, an increase of up to two weeks of muc
 
 Here we take weather data from Chicago in 2024 where temperatures were at or above the 95th percentile for heat (about 87ºF) and place it on a calendar. Next to it is what summers could look like at the estimated rate of warming.
 
-```{r echo=FALSE,out.width="49%", out.height="20%",fig.cap="Days above 95th Percentile, 2024 & Potential 2029",fig.show='hold',fig.align='center'}
+*Days above 95th Percentile, 2024* ![](images/2024.png)
 
-knitr::include_graphics(c("images/2024.png", "images/2029.png"))
+*Days above 95th Percentile, Potential 2029* ![](images/2029.png)
 
-```
+If warming continues at the predicted rates, some months could see nearly more days above 87º than not.
 
-If warming continues at the predicted rates, some months could have nearly more days above 87º than not.
-
-# Increasing Heatwaves
+# Increasing Heatwaves {.tabset}
 
 It is also crucial to consider heatwaves in addition to overall warmer temperatures when assessing climate change impacts. Heatwaves—defined as periods of abnormally hot weather—are typically marked by **three or more consecutive days where the daily high temperature meets or exceeds the local 90th percentile** for daily maximum temperatures. This metric measures the frequency of heatwaves, calculated as the number of distinct heatwaves per year.
 
 Heatwaves are becoming more frequent, further amplifying the risks associated with extreme heat. While general temperature increases are concerning, heatwaves present additional challenges, as they involve extended periods of high temperatures that strain public health systems, infrastructure, and energy resources. These extended heat events can be particularly hazardous, especially for vulnerable populations and regions unprepared for such prolonged extreme conditions.
 
-```{r table - count heatwave per warming scenario, message=FALSE}
+```{r table - count heatwave per warming scenario, message=FALSE, fig.width = 5, fig.height = 3}
 
 # FIND THE AVERAGE NUMBER OF HEATWAVES PER WARMING SCENARIO
 heatwave_count <- climate_data %>%
@@ -497,30 +496,57 @@ average_heatwave_count <- heatwave_count %>%
   group_by(scenario) %>%
   summarize(avg_heatwave_count = mean(mean_estimate, na.rm = TRUE), .groups = "drop") 
 
-knitr::kable(average_heatwave_count)
+ggplot(average_heatwave_count, aes(x = scenario, y = avg_heatwave_count, color = scenario)) +
+  geom_point(size = 4) +                     # Add points
+  scale_y_continuous(limits = c(5, 9)) + 
+  geom_text(aes(label = round(avg_heatwave_count, 2)), # Add labels with rounded values
+            vjust = -1, size = 4) +          # Position labels above points
+  theme_minimal() +                          # Minimal theme for clean aesthetics
+  labs(
+    title = "Average Heatwave Count by Warming Scenario",
+    x = "Scenario",
+    y = "Average Heatwave Count",
+    color = "Scenario"
+  ) +
+  theme(
+    legend.position = "none"
+  ) +
+  scale_color_manual(values = c("#FEB24CFF", "#FD8D3CFF", "#E31A1CFF", "#800026FF"))
 
 ```
 
 The Midwest can expect an increase in the frequency of heatwaves, with the average number of heatwaves per year rising from 6.4 in the `Recent Historical` scenario to 7.5 in the worst case `3.0C` scenario. While this might seem like only one additional heatwave, it’s important to consider the cumulative toll these events can have, especially on vulnerable populations. Even a single heatwave can have severe consequences, including heat-related illnesses, strain on healthcare systems, power grids, and overall community resilience.
 
-```{r chart - heatwave count by city and scenario, fig.width=8}
+## Models
 
-ggplot(heatwave_count, aes(x = mean_estimate, y = city, color = scenario)) +
-  geom_point(size = 5, alpha = 0.8) +  
+```{r chart - heatwave count by city and scenario, fig.width=8, fig.height=8}
+
+heatwave_count$scenario <- factor(heatwave_count$scenario, levels = rev(levels(factor(heatwave_count$scenario))))
+
+ggplot(heatwave_count, aes(x = mean_estimate, y = scenario, color = model)) +
+  geom_point(size = 4, alpha = 0.8) +  
   scale_x_continuous(limits = c(3, 10)) + 
-  scale_y_discrete(limits=rev) +
+  facet_wrap(~ city, ncol = 2, scales = "free_y") +  # Split into 2 columns
   theme_minimal() +
   theme(
-    strip.text.y = element_text(angle = 0),  
-    axis.title.y = element_blank()  
+    strip.text = element_text(size = 10),  # Adjust facet label size
+    legend.position = "bottom",           # Move legend to the bottom
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title.y = element_blank()        # Remove y-axis label
   ) +
   labs(
-    title = "Heatwave Count by City and Scenario",
-    x = "Mean Heatwave Count",
-    color = "Scenario"
+    title = "Heatwave Count by Model and Scenario",
+    color = "Model", 
+    x = "Yearly Heatwave Count",
   ) +
-  scale_color_brewer(palette = "YlOrBr") 
+    scale_color_manual(values = c("#FED976FF", "#FEB24CFF", "#FD8D3CFF", "#FC4E2AFF", "#E31A1CFF", "#BD0026FF", "#800026FF"))
+
+
+
 ```
+
+## Table
 
 ```{r table - heatwave count by city}
 
@@ -539,36 +565,49 @@ average_heatwave_city <- average_heatwave_city %>%
 knitr::kable(average_heatwave_city)
 ```
 
+
+##  {.unlisted .unnumbered}
+
 Cities across the Midwest are projected to experience varying shifts in heatwave frequency. For example, **Chicago** may see a slight increase, from 6.9 in the Recent Historical scenario to 7.8 in the 3.0C scenario, while cities like **Cincinnati** and **Louisville** are projected to see larger increases, with **Cincinnati** moving from 6.3 to 8.0 and **Louisville** from 6.5 to 7.4. Even small shifts in heatwave frequency can significantly affect public health, particularly for elderly, low-income, and other vulnerable groups who may struggle to cope with extended periods of extreme heat. This emphasizes the need for proactive heatwave preparedness and climate adaptation strategies.
 
-# Heatwave Duration
+# Heatwave Duration {.tabset}
 
 Not only will there be more heatwaves, but they are also likely to be **longer**. The length of heatwaves is a critical factor to consider, as prolonged periods of extreme heat can have even greater impacts on public health, infrastructure, and the environment.
 
 This hazard is calculated as the **length in days of the longest heatwave in a year**, with a heatwave defined as **three or more consecutive days where the daily high temperature meets or exceeds the local 90th percentile for daily maximum** temperatures. As temperatures continue to rise, the duration of heatwaves is expected to increase, meaning that communities may face extended periods of extreme heat, which can overwhelm cooling systems, increase the risk of heat-related illnesses, and put additional strain on energy resources.
 
-```{r heatwave duration by model, fig.width=8}
+## Model
+
+```{r heatwave duration by model, fig.width=8, fig.height=8}
 
 heatwave_duration <- climate_data %>%
   filter(hazard == "heatwave_duration",
          indicator == "expectedvalue")
 
-ggplot(heatwave_duration, aes(x = mean_estimate, y = city, color = scenario)) +
-  geom_point(size = 5, alpha = 0.8) +  
+heatwave_duration$scenario <- factor(heatwave_duration$scenario, levels = rev(levels(factor(heatwave_duration$scenario))))
+
+ggplot(heatwave_duration, aes(x = mean_estimate, y = scenario, color = model)) +
+  geom_point(size = 4, alpha = 0.8) +  
   scale_x_continuous(limits = c(0, 24)) + 
+  facet_wrap(~ city, ncol = 2, scales = "free_y") +  # Split into 2 columns
   theme_minimal() +
   theme(
-    strip.text.y = element_text(angle = 0),  
-    axis.title.y = element_blank()  
+    strip.text = element_text(size = 10),  # Adjust facet label size
+    legend.position = "bottom",           # Move legend to the bottom
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title.y = element_blank()        # Remove y-axis label
   ) +
   labs(
     title = "Heatwave Duration by Model and Scenario",
     x = "Longest Heatwave Duration",
-    color = "Scenario"
-  ) +
-  scale_color_brewer(palette = "YlOrBr") 
+    color = "Model"
+  )  +
+    scale_color_manual(values = c("#FED976FF", "#FEB24CFF", "#FD8D3CFF", "#FC4E2AFF", "#E31A1CFF", "#BD0026FF", "#800026FF"))
+
 
 ```
+
 
 This shows the average duration (in days) of the longest heatwave per year under different warming scenarios. This indicates that with higher warming, not only will heatwaves become more frequent, but they will also last longer, exacerbating the potential impacts on public health and infrastructure.
 
@@ -578,6 +617,7 @@ For example, **Chicago** and **Kansas City** have the longest heatwaves, with du
 
 As we move into higher warming scenarios, many cities will see these durations extend even further, with some reaching over **three weeks**. In the **3.0C** scenario, cities like **Chicago** (19.6 days), **Indianapolis** (18.1 days), and **Minneapolis** (19.1 days) will experience heatwaves that last well beyond **three weeks**, adding even more strain on infrastructure and increasing risks for vulnerable populations.
 
+## Table
 ```{r table - heatwave duration per city, fig.width=8}
 
 # FIND AVERAGE LENGTH OF LONGEST HEATWAVE PER CITY PER SCENARIO
@@ -595,6 +635,8 @@ average_duration_city <- average_duration_city %>%
 knitr::kable(average_duration_city)
 
 ```
+
+##  {.unlisted .unnumbered}
 
 Looking at the shift from **Recent Historical** to the **1.5C**, **2.0C**, and **3.0C** scenarios, we see that all cities are expected to experience an increase in the number of days with heatwaves, with some cities facing substantial jumps in heatwave length.
 
@@ -618,6 +660,7 @@ People will also face disruptions to daily life through higher energy costs, red
 
 Ultimately, the impacts of climate change will make everyday life more challenging, particularly for those who are already marginalized or economically vulnerable.
 
-Continue here
+[Continue here](https://kabarbour.github.io/midwest-climate/case-studies.htmlhttps://kabarbour.github.io/midwest-climate/case-studies.html)
 
 rmarkdown::render_site()
+
